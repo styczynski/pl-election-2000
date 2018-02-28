@@ -1,0 +1,71 @@
+A,A:Visited {
+    color:#0000ff
+}
+ A:Hover {
+    color:#aa0000;
+}
+ #l {
+    font-size:2px;
+    background-color:#000060;
+}
+ #p {
+    font-size:2px
+}
+ TD {
+    font-family:Arial,Verdana,Helvetica;
+    font-size:10pt;
+    color:#000000
+}
+ #k1 {
+    color:#111E7A;
+}
+ TD#t {
+    font-family:Verdana, Arial;
+    font-size:8pt;
+    color:#111e7a;
+    font-weight:bold;
+}
+ #s8 {
+    font-family:Verdana, Arial;
+    font-size:8pt;
+    color:#000000;
+}
+ #s10 {
+    font-family:Verdana, Arial;
+    font-size:10pt;
+    color:#000000;
+}
+ #s8b {
+    font-family:Verdana, Arial;
+    font-size:8pt;
+    color:#000080;
+}
+ #s10b {
+    font-family:Verdana, Arial;
+    font-size:10pt;
+    color:#000080;
+}
+ #h0 {
+    font-family:Arial;
+    font-size:19px;
+    color:#000000;
+    font-weight:bold;
+}
+ #h1 {
+    font-family:Arial;
+    font-size:17px;
+    color:#000000;
+    font-weight:bold;
+}
+ #h2 {
+    font-family:Arial;
+    font-size:13px;
+    color:#000000;
+    font-weight:bold;
+}
+ #b2a {
+    font-family:Verdana, Arial;
+    font-size:8pt;
+    color:#000000;
+}
+ 
