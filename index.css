@@ -57,19 +57,6 @@ header div.mask img {
     width: 647px;
 }
 
-header div.title:hover {
-    border-left: 4px solid transparent;
-}
-
-header div.title:hover div.mask {
-    opacity: 0.8;
-    width: 647px;
-}
-
-header div.title:hover a {
-    color: #270a0ab8;
-}
-
 section {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -80,38 +67,71 @@ section {
     color: #575755;
     padding-left: 31px;
     margin-bottom: 12px;
-    border-left: 4px solid #575755;
+    border-left: 4px solid #975259;
     transition: all 0.5s;
 }
 
-section mark {
+nav.sections {
+    background: #975259;
+    width: 635px;
     position: relative;
-    left: -113px;
-    top: -65px;
-    background: transparent;
-    font-size: 44px;
-    color: #575755;
-    /* transform: rotateZ(60deg); */
-    filter: sepia;
+    top: 75px;
+    height: 59px;
+    left: 134px;
 }
 
-section:hover {
-    border-left: 4px solid #944a4a;
-    margin-left: 10px;
-    background: #00000024;
-    border-radius: 10px;
+nav.sections ul {
+    list-style-type: none;
+    margin: 0;
+    /* padding: 0; */
+    padding-left: 10px;
 }
 
-section:hover mark {
-    color: #944a4a;
+nav.sections li {
+    display: inline-block;
+    width: 52px;
+    height: 52px;
+    padding: 0px;
+    width: 52px;
+    height: 58px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+    /* border-radius: 17px 17px 0 0; */
+    padding-top: 5px;
+    border-bottom: none;
 }
 
-nav {
+nav.sections h1 {
+    display: inline;
+    font-size: 39px;
+    color: #eadfdf;
+    /* width: 52px; */
+    /* height: 52px; */
+    /* display: block; */
+    /* padding-left: 11%; */
+    /* padding-right: 25%; */
+}
+
+nav.sections li:hover {
+    border-bottom: 2px solid #975259;
+    background: #eadfdf;
+}
+
+nav.sections li:hover h1 {
+    color: #975259;
+}
+
+nav.links {
     display: none;
 }
 
 main {
-    top: 223px;
+    display: none;
+}
+
+div.content-view {
+    top: 232px;
     position: absolute;
     padding: 0;
     width: 84%;
@@ -137,8 +157,18 @@ table.content-layout td {
 }
 
 .background-image {
-    position: absolute;
+    position: fixed;
     top: -15px;
     right: 25px;
     z-index: -1000000;
+}
+
+
+
+.perc-bar {
+
+}
+
+.perc-bar div {
+    opacity: 0;
 }
