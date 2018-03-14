@@ -11,6 +11,7 @@
         <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
         <script src="./vendor/d3pie.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <!--<script src="http://d3js.org/d3.v3.js"></script>-->
         <script src="./vendor/pl-map.js"></script>
         <title>Wybory Prezydenta Rzeczypospolitej Polskiej 2000</title>
@@ -100,9 +101,10 @@
                 <span class="section-icon" data-icon="fas fa-percent"></span>
                 <figure>
                     <!--<img src="./img/pwf.gif" border="0"><img src="./img/31.png" alt="Legenda" border="0">-->
-                    <svg id="frequency-map-chart" width="500px" height="500px">
+                    <!--<svg id="frequency-map-chart" width="500px" height="500px">
                         <g class="map"></g>
-                    </svg>
+                    </svg>-->
+                    <div id="frequency-map-chart"></div>
                 </figure>
 
                 <table width="100%" cellspacing="2" cellpadding="1" border="0">
@@ -226,7 +228,8 @@
                     };
                     self.init = function() {
                         self.__createChart();
-                        self.__createMap();
+                        //self.__createMap();
+                        self.__createGeoMap();
                         $("main section > .section-icon").each(function(index){
                            var el = $(this);
                            var section = el.parent();
@@ -250,6 +253,42 @@
                         });
                         self.switchTo(self.displayedIndex);
                     };
+                    self.__createGeoMap = function() {
+                            google.charts.load('current', {
+                              'packages':['geochart'],
+                              // Note: you will need to get a mapsApiKey for your project.
+                              // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+                              'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+                            });
+
+
+                            function drawRegionsMap() {
+                              var data = google.visualization.arrayToDataTable([
+                                ['Country', 'Popularity'],
+                                ['Germany', 200],
+                                ['United States', 300],
+                                ['Brazil', 400],
+                                ['Canada', 500],
+                                ['France', 600],
+                                ['RU', 700]
+                              ]);
+
+                              var options = {
+                                region: 'PL',
+                                backgroundColor: 'transparent',
+                                height: 500,
+                                width: 500
+                              };
+
+                              var chart = new google.visualization.GeoChart(document.getElementById('frequency-map-chart'));
+
+                              chart.draw(data, options);
+                            }
+                            google.charts.setOnLoadCallback(drawRegionsMap);
+
+                    };
+
+
                     self.__createMap = function() {
 
                         var geojson = window.PlGeoMap;

@@ -75,7 +75,7 @@ nav.sections {
     background: #975259;
     width: 635px;
     position: relative;
-    top: 75px;
+    top: 133px;
     height: 59px;
     left: 134px;
 }
@@ -131,7 +131,7 @@ main {
 }
 
 div.content-view {
-    top: 232px;
+    top: 290px;
     position: absolute;
     padding: 0;
     width: 84%;
