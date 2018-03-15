@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <link href="https://fonts.googleapis.com/css?family=PT+Sans|Raleway:800" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="./index.css">
-        <script
-                src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
-                crossorigin="anonymous"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
-        <script src="./vendor/d3pie.min.js"></script>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <!--<script src="http://d3js.org/d3.v3.js"></script>-->
-        <script src="./vendor/pl-map.js"></script>
-        <title>Wybory Prezydenta Rzeczypospolitej Polskiej 2000</title>
+        {% include 'header.tmpl' %}
+        <script>
+
+            const VOTE_DATA_FREQUENCY = {{ VoteDataVoivodeshipsFrequencyJSON | safe }};
+
+        </script>
     </head>
     <body>
 
@@ -30,12 +22,12 @@
                 Rzeczypospolitej Polskiej 2000r.
             </a>
             <div class="mask">
-                <img src="./img/voting_flag.png"/>
+                <img src="{{assets}}/voting_flag.png"/>
             </div>
         </div>
     </header>
 
-    <img class="background-image" src="./img/voting_image.png"/>
+    <img class="background-image" src="{{assets}}/voting_image.png"/>
 
         <nav class="sections">
             <ul>
@@ -263,25 +255,7 @@
 
 
                             function drawRegionsMap() {
-                              var data = google.visualization.arrayToDataTable([
-                                ['Region', 'Popularity'],
-                                ['PL-DS', 0],
-                                ['PL-KP', 40],
-                                ['PL-LU', 100],
-                                ['PL-LB', 50],
-                                ['PL-LD', 60],
-                                ['PL-MA', 42],
-                                ['PL-MZ', 55],
-                                ['PL-OP', 65],
-                                ['PL-PK', 70],
-                                ['PL-PD', 5],
-                                ['PL-PM', 20],
-                                ['PL-SL', 10],
-                                ['PL-SK', 55],
-                                ['PL-WN', 12],
-                                ['PL-WP', 60],
-                                ['PL-ZP', 96]
-                              ]);
+                              var data = google.visualization.arrayToDataTable(VOTE_DATA_FREQUENCY);
 
                               var options = {
                                 region: 'PL',
@@ -289,6 +263,9 @@
                                 backgroundColor: 'transparent',
                                 height: 500,
                                 width: 500,
+                                tooltip: {
+                                    isHtml: true
+                                },
                                 colorAxis: {
                                     colors: ['#cecccc', '#754a4a']
                                 }

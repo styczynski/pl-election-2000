@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo ""
+echo "[i] === Generate bash script version 1.0.0 ==="
+python -m generate
+echo "[i] Terminate process shell."
