@@ -65,10 +65,14 @@ section {
     /* border-top: 2px solid #0a3d62; */
     /* border-bottom: 2px solid #0a3d62; */
     color: #575755;
-    padding-left: 31px;
+    /* padding-left: 31px; */
     margin-bottom: 12px;
     border-left: 4px solid #975259;
     transition: all 0.5s;
+}
+
+section > h2 {
+    margin-left: 30px;
 }
 
 nav.sections {
@@ -171,4 +175,90 @@ table.content-layout td {
 
 .perc-bar div {
     opacity: 0;
+}
+
+table.results-table {
+    border-spacing: 0;
+    width: 900px;
+    table-layout: fixed;
+}
+
+table.results-table thead {
+    background-color: #975259;
+    color: white;
+}
+
+table.results-table thead th {
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+table.results-table thead th:hover {
+    background: white;
+    color: #975259;
+}
+
+table.results-table thead th.sort-asc:after {
+    width: 13px;
+    display: inline-block;
+    content: "↓";
+}
+
+table.results-table thead th.sort-desc:after {
+    width: 13px;
+    display: inline-block;
+    content: "↑";
+}
+
+table.results-table tbody td {
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #f9c3c814;
+    border-bottom: 1px #975259 solid;
+    cursor: pointer;
+    user-select: none;
+}
+
+table.results-table tbody tr:hover {
+    background: #975259;
+    color: white;
+}
+
+.voting-map-section {
+    position: fixed;
+    right: -22px;
+    top: -141px;
+    transform: scale(0.88);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: -99;
+}
+
+.main-map-fig {
+    position: fixed;
+    right: -22px;
+    top: -141px;
+    transform: scale(0.88);
+    z-index: 1000;
+    background: url(./assets/voting_image_map.png);
+    background-position-x: 97px;
+    background-position-y: 90px;
+    background-repeat: no-repeat;
+    background-size: 323px;
+    clip-path: circle(184px at 265px 263px);
+    transition: all 0.5s;
+}
+
+.main-map-fig.minimized {
+    transform: scale(0.48) translateX(392px);
+}
+
+
+.main-map-fig path:hover {
+    fill: #eadfdf;
+}
+.main-map-fig path {
+    fill: transparent;
 }

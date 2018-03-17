@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'header.tmpl' %}
+        <script>
+
+            const VOTE_DATA_FREQUENCY = {{ VoteDataVoivodeshipsFrequencyJSON | safe }};
+            const VOTES_PER_CANDIDATE = {{ VoteDataTotalVotesPerCandidateJSON | safe }};
+            const VOIVODESHIP_CODES = {{ VoivodeshipsCodesJSON | safe }};
+            const PAGE_URL = 'http://localhost:8000/build';
+            const VOIVODESHIP_SUBPAGE_URL = PAGE_URL + '/subpage_';
+            const MARKED_VOIVODESHIP_NAME = '{{ subpageVoivodeshipName }}';
+
+        </script>
+    </head>
+    <body>
+
+    <header>
+        <div class="title">
+            <a href="http://prezydent2000.pkw.gov.pl/index.html">
+                Wybory Prezydenta
+                <br>
+                Rzeczypospolitej Polskiej 2000r.
+                {{ subpageVoivodeshipName }}
+            </a>
+            <figure class="main-map-fig">
+                <div id="main-map-chart"></div>
+            </figure>
+        </div>
+    </header>
+
+        <nav class="sections">
+            <ul></ul>
+        </nav>
+
+        <div class="content-view"></div>
+
+        <main>
+
+            <ol style="display:none">
+                <li>
+                    <a href="http://www.example.com/">
+                        Polska
+                    </a>
+                </li>
+            </ol>
+
+
+            <section>
+                <h2>Procentowa liczba głosów dla poszczególnych kandydatów</h2>
+                <span class="section-icon" data-icon="fas fa-users"></span>
+
+                <figure>
+                    <!--<img src="./img/kd.png" border="0">-->
+                    <div id="votes-per-cand-chart"></div>
+
+
+                    <table class="results-table">
+                         <thead>
+                            <tr>
+                                <th>Kandydat</th>
+                                <th>Oddane głosy</th>
+                                <th>Wynik (%)</th>
+                            </tr>
+                         </thead>
+                        <tbody>
+                            {% for candidate in VoteDataTotalVotesPerCandidate %}
+                                <tr>
+                                    <td>{{candidate.name}}</td>
+                                    <td>{{candidate.votesCountStr}}</td>
+                                    <td>{{candidate.votesPercStr}}</td>
+                                </tr>
+                            {% endfor %}
+                         </tbody>
+                    </table>
+
+                </figure>
+            </section>
+
+            <br>
+
+            <section>
+                <h2>Wyniki poszczególnych kandydatów</h2>
+                <span class="section-icon" data-icon="fas fa-info"></span>
+            </section>
+
+            <br>
+
+            <section>
+                <h2>Frekwencja</h2>
+                <span class="section-icon" data-icon="fas fa-percent"></span>
+                <figure>
+                    <div id="frequency-map-chart"></div>
+                    <div id="subdivision-map-chart" style="width:900px;height:900px;"></div>
+                </figure>
+
+                <table width="100%" cellspacing="2" cellpadding="1" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="100%">
+                                <table border="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/020000.html">WOJ. DOLNOŚLĄSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/040000.html">WOJ. KUJAWSKO-POMORSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/060000.html">WOJ. LUBELSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/080000.html">WOJ. LUBUSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/100000.html">WOJ. ŁÓDZKIE</a><br></td>
+                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/120000.html">WOJ. MAŁOPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/140000.html">WOJ. MAZOWIECKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/160000.html">WOJ. OPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/180000.html">WOJ. PODKARPACKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/200000.html">WOJ. PODLASKIE</a><br></td>
+                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/220000.html">WOJ. POMORSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/240000.html">WOJ. ŚLĄSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/260000.html">WOJ. ŚWIĘTOKRZYSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/280000.html">WOJ. WARMIŃSKO-MAZURSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/300000.html">WOJ. WIELKOPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/320000.html">WOJ. ZACHODNIOPOMORSKIE</a><br></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Statystyka ogółem</h2>
+                <table width="100%" border="0" cellspacing="2" cellpadding="1" align="center">
+
+                </table>
+            </section>
+
+            <br>
+            <footer></footer>
+        </main>
+
+    </body>
+</html>
