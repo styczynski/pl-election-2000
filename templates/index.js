@@ -16,14 +16,14 @@ var PIE_COLORS = [
 $(document).ready(function() {
     function ContentsView() {
         var self = this;
-        var sectionsNavList = $(".sections > ul");
+        var sectionsNavList = $("main > nav > ul");
         self.displayedIndex = 0;
         self.sections = [];
         self.switchTo = function changeContentView(index) {
-            console.log("! Switch to "+index)
+            console.log("! Switch to "+index);
             self.displayedIndex = index;
-            $(".content-view").children().appendTo("main");
-            $($("main section.section-"+index)).appendTo($(".content-view"));
+            $("main section.active").removeClass('active');
+            $($("main section.section-"+index)).addClass('active');
         };
         self.init = function() {
             self.__createChart();
@@ -55,7 +55,7 @@ $(document).ready(function() {
         };
         self.__loadMaps = function() {
             google.charts.load('current', {
-                'packages':['geochart'],
+                'packages':['geochart', 'corechart'],
                 // Note: you will need to get a mapsApiKey for your project.
                 // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
                 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
@@ -106,8 +106,8 @@ $(document).ready(function() {
                   ['Region', 'None']
               ];
 
-              if(MARKED_VOIVODESHIP_NAME) {
-                  var voivodeshipCode = VOIVODESHIP_CODES[MARKED_VOIVODESHIP_NAME];
+              if(VOTING_DATA.voivodeshipSubpageName) {
+                  var voivodeshipCode = VOTING_DATA.voivodeshipCodes[VOTING_DATA.voivodeshipSubpageName];
                   if(voivodeshipCode) {
                       dataToNavigate.push([
                             voivodeshipCode, 100
@@ -139,12 +139,12 @@ $(document).ready(function() {
 
                     console.log(eventData.region);
 
-                    var voivodeshipFullName = Object.keys(VOIVODESHIP_CODES).filter(function(key){
-                        return VOIVODESHIP_CODES[key] == eventData.region;
+                    var voivodeshipFullName = Object.keys(VOTING_DATA.voivodeshipCodes).filter(function(key){
+                        return VOTING_DATA.voivodeshipCodes[key] == eventData.region;
                     })[0];
 
                     if(voivodeshipFullName) {
-                        window.location = VOIVODESHIP_SUBPAGE_URL + voivodeshipFullName + '.html';
+                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
                     };
               };
 
@@ -157,11 +157,14 @@ $(document).ready(function() {
                   const distanceY = window.pageYOffset || document.documentElement.scrollTop,
                   shrinkOn = 200,
                   mapElement = $('.main-map-fig')
+                  asideElement = $('aside')
 
                   if (distanceY > shrinkOn) {
                     mapElement.addClass('minimized');
+                    asideElement.addClass('active');
                   } else {
                       mapElement.removeClass('minimized');
+                      asideElement.removeClass('active');
                   }
               }
 
@@ -180,35 +183,138 @@ $(document).ready(function() {
 
         self.__createGeoMap = function() {
 
-              var data = google.visualization.arrayToDataTable(VOTE_DATA_FREQUENCY);
+              if(!VOTING_DATA.voivodeshipSubpageName) {
+                  var frequencyData = [
+                        [
+                            {
+                                'label': 'Region',
+                                'id': 'region',
+                                'type': 'string'
+                            },
+                            {
+                                'label': 'Frekwencja (%)',
+                                'id': 'frequency',
+                                'type': 'number'
+                            },
+                            {
+                                'role': 'tooltip',
+                                'type': 'string',
+                                'p': {
+                                    'html': true
+                                }
+                            }
+                        ]
+                  ];
 
-              var options = {
-                region: 'PL',
-                resolution: 'provinces',
-                backgroundColor: 'transparent',
-                height: 500,
-                width: 500,
-                tooltip: {
-                    isHtml: true
-                },
-                colorAxis: {
-                    colors: ['#cecccc', '#754a4a']
-                }
-              };
+                  frequencyData = frequencyData.concat(Object.values(VOTING_DATA.voivodeships).map(function(voivodeship){
+                      return [
+                            voivodeship.voivodeshipCode,
+                            voivodeship.frequencyPerc,
+                            "<b>"+voivodeship.name+"</b>" +
+                            "<p><b>Frekwencja: </b>&nbsp;"+voivodeship.frequencyPercStr+"</p>" +
+                            "<p></p>" +
+                            "<p><b>Uprawnionych: </b>&nbsp;"+voivodeship.allowedStr+"</p>" +
+                            "<p><b>Wydanych kart: </b>&nbsp;"+voivodeship.cardsReleasedStr+"</p>"
+                      ];
+                  }));
 
-              var chart = new google.visualization.GeoChart(document.getElementById('frequency-map-chart'));
+                  var data = google.visualization.arrayToDataTable(frequencyData);
 
-              function clickRegion(eventData) {
-                    var voivodeshipFullName = Object.keys(VOIVODESHIP_CODES).filter(function(key){
-                        return VOIVODESHIP_CODES[key] == eventData.region;
-                    })[0];
-                    if(voivodeshipFullName) {
-                        window.location = VOIVODESHIP_SUBPAGE_URL + voivodeshipFullName + '.html';
-                    };
-              };
-              google.visualization.events.addListener(chart, 'regionClick', clickRegion);
+                  var options = {
+                    region: 'PL',
+                    resolution: 'provinces',
+                    backgroundColor: 'transparent',
+                    height: 500,
+                    width: 500,
+                    tooltip: {
+                        isHtml: true
+                    },
+                    colorAxis: {
+                        colors: ['#cecccc', '#754a4a']
+                    }
+                  };
 
-              chart.draw(data, options);
+                  var chart = new google.visualization.GeoChart(document.getElementById('frequency-map-chart'));
+
+                  function clickRegion(eventData) {
+                        var voivodeshipFullName = Object.values(VOTING_DATA.voivodeships).filter(function(voivodeship){
+                            return voivodeship.voivodeshipCode == eventData.region;
+                        })[0];
+                        if(voivodeshipFullName) {
+                            window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
+                        };
+                  };
+                  google.visualization.events.addListener(chart, 'regionClick', clickRegion);
+
+                  chart.draw(data, options);
+              } else if(!VOTING_DATA.divisionSubpageNo) {
+
+                  var chartData = [
+                    ['Okręg', 'Frekwencja', { role: 'style' }]
+                  ];
+
+                  chartData = chartData.concat(Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, index){
+                      return [
+                          'Okręg '+divisionNo,
+                          VOTING_DATA.divisions[divisionNo].frequencyPerc,
+                          PIE_COLORS[index % 2]
+                      ]
+                  }));
+
+                  var data = google.visualization.arrayToDataTable(chartData);
+
+                  var view = new google.visualization.DataView(data);
+                  //view.setColumns([0, 1]);
+
+                  var options = {
+                    title: 'Frekwencja',
+                    width: 600,
+                    height: 400,
+                    backgroundColor: 'transparent',
+                    bar: {groupWidth: '95%'},
+                    legend: {
+                        position: 'none'
+                    }
+                  };
+                  var chart = new google.visualization.BarChart(document.getElementById('frequency-map-chart'));
+                  chart.draw(view, options);
+              } else if(!VOTING_DATA.communeSubpageName) {
+                  var chartData = [
+                    ['Gmina', 'Frekwencja', { role: 'style' }]
+                  ];
+
+                  chartData = chartData.concat(Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, index){
+                      return [
+                          communeName,
+                          VOTING_DATA.communes[communeName].frequencyPerc,
+                          PIE_COLORS[index % 2]
+                      ]
+                  }));
+
+                  var data = google.visualization.arrayToDataTable(chartData);
+
+                  var view = new google.visualization.DataView(data);
+                  //view.setColumns([0, 1]);
+
+                  var options = {
+                    width: 830,
+                    height: 500,
+                    backgroundColor: 'transparent',
+                    bar: {groupWidth: '95%'},
+                    legend: {
+                        position: 'none'
+                    },
+                    chartArea: {
+                        width: '850px'
+                    },
+                    hAxis: {
+                        slantedText: true,
+                        slantedTextAngle: 90
+                    }
+                  };
+                  var chart = new google.visualization.ColumnChart(document.getElementById('frequency-map-chart'));
+                  chart.draw(view, options);
+              }
 
         };
 
@@ -281,12 +387,140 @@ $(document).ready(function() {
 
         };
         self.__installClickHooks = function() {
-            $('.results-table.voting-frequency tr').click(function() {
-                var self = $(this);
-                var voivodeshipFullName = self.data('voivodeship');
 
-                if (VOIVODESHIP_CODES[voivodeshipFullName]) {
-                    window.location = VOIVODESHIP_SUBPAGE_URL + voivodeshipFullName + '.html';
+            var toSearch = [];
+            Object.keys(VOTING_DATA.search.voivodeships).forEach(function(voivodeshipName){
+                toSearch.push({
+                    textData: 'Województwo '+voivodeshipName,
+                    label: voivodeshipName,
+                    itemType: 'voivodeship',
+                    name: voivodeshipName
+                });
+            });
+
+            Object.keys(VOTING_DATA.search.divisions).forEach(function(divisionNo){
+                toSearch.push({
+                    textData: 'Okręg '+divisionNo,
+                    label: 'Okręg '+divisionNo,
+                    itemType: 'division',
+                    name: divisionNo
+                });
+            });
+
+            Object.keys(VOTING_DATA.search.communes).forEach(function(communeName){
+                toSearch.push({
+                    textData: 'Gmina '+communeName,
+                    label: communeName,
+                    itemType: 'commune',
+                    name: communeName
+                });
+            });
+
+            $('body > nav ul li input').each(function(){
+                var self = $(this);
+                var resultsList = self.parent().find('ol');
+
+                self.keypress(function(){
+                    var content = self.val();
+                    var results = [];
+
+                    results = fuzzysort.go(content, toSearch, {key: 'textData'}).map(function(result){
+                        var resultNode = $('<li></li>');
+                        resultNode.text(result.obj.label);
+
+                        if(result.obj.itemType == 'voivodeship') {
+                            resultNode.data('link-voivodeship', result.obj.name);
+                        } else if(result.obj.itemType == 'division') {
+                            resultNode.data('link-division', result.obj.name);
+                        } else if(result.obj.itemType == 'commune') {
+                            resultNode.data('link-commune', result.obj.name);
+                        }
+
+                        return resultNode;
+                    });
+
+                    resultsList.children().remove();
+                    results.forEach(function(item) {
+                        item.appendTo(resultsList);
+                    });
+                });
+            });
+
+            $('body > nav ul li').each(function(){
+                var self = $(this);
+                var nestedList = self.find('ul');
+                var nestedInput = self.find('input');
+                var nestedResultList = self.find('ol');
+
+                var isSelfHovered = false;
+                var isNestedListHovered = false;
+                var isNestedInputHovered = false;
+                var isNestedResultListHovered = false;
+
+                function updateHoverClasses() {
+                  if(isSelfHovered || isNestedListHovered || isNestedInputHovered || isNestedResultListHovered) {
+                      self.addClass('active');
+                      nestedList.addClass('active');
+                      nestedInput.addClass('active');
+                      nestedResultList.addClass('active');
+                  } else {
+                      self.removeClass('active');
+                      nestedList.removeClass('active');
+                      nestedInput.removeClass('active');
+                      nestedResultList.removeClass('active');
+                  }
+                };
+
+                nestedResultList.hover(function(){
+                    isNestedResultListHovered = true;
+                    updateHoverClasses();
+                }, function(){
+                    isNestedResultListHovered = false;
+                    updateHoverClasses();
+                });
+
+                nestedInput.hover(function(){
+                    isNestedInputHovered = true;
+                    updateHoverClasses();
+                }, function(){
+                    isNestedInputHovered = false;
+                    updateHoverClasses();
+                });
+
+                nestedList.hover(function(){
+                    isNestedListHovered = true;
+                    updateHoverClasses();
+                }, function(){
+                    isNestedListHovered = false;
+                    updateHoverClasses();
+                });
+
+                self.hover(function(){
+                    isSelfHovered = true;
+                    updateHoverClasses();
+                }, function(){
+                    isSelfHovered = false;
+                    updateHoverClasses();
+                });
+
+                updateHoverClasses();
+            })
+
+            $('[data-link-voivodeship],[data-link-division],[data-link-commune]').click(function() {
+                var self = $(this);
+                var voivodeshipFullName = self.data('link-voivodeship');
+                var divisionNo = self.data('link-division');
+                var communeName = self.data('link-commune');
+
+
+                if (voivodeshipFullName !== null && voivodeshipFullName !== undefined) {
+                    if (VOTING_DATA.voivodeshipCodes[voivodeshipFullName]) {
+                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
+                    }
+                } else if(divisionNo !== null && divisionNo !== undefined) {
+                    window.location = VOTING_DATA.divisionSubpageUrl + divisionNo + '.html';
+                } else if(communeName !== null && communeName !== undefined) {
+                    window.location = VOTING_DATA.communeSubpageUrl + communeName + '.html';
                 }
 
             });
@@ -356,11 +590,21 @@ $(document).ready(function() {
             });
 
         };
+
+        self.getSubpageRegionResolutionData = function() {
+            if (VOTING_DATA.voivodeshipSubpageName) {
+                return VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName];
+            } else {
+                return VOTING_DATA;
+            }
+        };
+
         self.__createChart = function() {
 
 
             var pieVotesConfigArray = [];
-            VOTES_PER_CANDIDATE.forEach(function(el, index){
+
+            Object.values(self.getSubpageRegionResolutionData().candidates).forEach(function(el, index){
                 pieVotesConfigArray.push({
                     label: el.name,
                     value: el.votes,

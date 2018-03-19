@@ -3,6 +3,131 @@ body {
     margin: 0px;
     background: #f7f7f7;
 }
+
+body > nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* background: red; */
+    width: 100%;
+}
+
+body > nav ul {
+    /* background: red; */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 8vh;
+    width: 100%;
+}
+
+body > nav ul input {
+    border: none;
+    font-size: 80%;
+    font-family: 'PT Sans', sans-serif;
+    padding-left: 18px;
+    border-bottom: 1px solid gray;
+    background: transparent;
+    width: 0;
+    transition: all 0.7s;
+    color: gray;
+}
+
+body > nav ul input.active {
+    width: 80%;
+}
+
+body > nav ul input:focus {
+    outline: none;
+}
+
+body > nav ul li {
+    color: #575755a3;
+    font-size: 264%;
+    display: inline-block;
+}
+
+body > nav ul li figure {
+    margin: 0;
+    padding: 1vw;
+    display: inline-block;
+}
+
+body > nav ul li.active figure {
+    color: white;
+    background: #975259;
+}
+
+body > nav ul li ul {
+    padding: 0;
+    margin: 0;
+    width: 20%;
+    font-size: 15%;
+    position: absolute;
+    z-index: 1000;
+    height: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: all 0.5s;
+}
+
+body > nav ul li ul.active {
+    height: 500px;
+}
+
+body > nav ul li ul li {
+    border-bottom: solid 1px #0000002e;
+    border-right: solid 1px #0000002e;
+    border-left: solid 1px #0000002e;
+    background: #e6e6e6;
+    color: #575755;
+    display: block;
+    margin: 0;
+    padding: 5px;
+    /* background: yellow; */
+    width: 100%;
+}
+
+body > nav ul li ul li:hover {
+    background: #975259;
+    color: white;
+    font-weight: bold;
+}
+
+body > nav ul li ol {
+    background: #fbfbfbde;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 18%;
+    position: absolute;
+    /* left: 10px; */
+    left: 12vw;
+    z-index: 1000;
+    width: 50%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 0;
+}
+
+body > nav ul li ol.active {
+    height: 50vh;
+}
+
+body > nav ul li ol li {
+    margin: 0;
+    padding: 10px;
+    display: block;
+    border-top: 1px solid #575755;
+}
+
+body > nav ul li ol li:hover {
+    background: white;
+    color: #575755;
+    font-weight: bold;
+}
+
+
 header {
     /* border: 2px solid black; */
     /* width: 800px; */
@@ -18,10 +143,9 @@ header {
     /* border: 2px solid #dc4f77; */
 }
 
-header a {
-    font-size: 3vw;
+header h1 {
+    font-size: 151%;
     width: 100%;
-    height: 100%;
     font-weight: bold;
     color: #575755;
     text-decoration: none;
@@ -30,7 +154,11 @@ header a {
     transition: all 0.5s;
 }
 
-header div.title {
+header h1 p {
+    margin: 0;
+}
+
+header {
     border-left: 4px solid #575755;
     position: relative;
     top: 67px;
@@ -40,21 +168,31 @@ header div.title {
     padding-left: 27px;
 }
 
-header div.mask {
-    position: relative;
-    top: -140px;
-    left: -55px;
-    opacity: 0;
-    overflow: hidden;
-    width: 647px;
-    height: 184px;
-    z-index: -9999999;
+header figure {
+    position: fixed;
+    right: -22px;
+    top: -141px;
+    transform: scale(0.88);
+    z-index: 2000000;
+    background: url(./assets/voting_image_map.png);
+    background-position-x: 97px;
+    background-position-y: 90px;
+    background-repeat: no-repeat;
+    background-size: 323px;
+    clip-path: circle(184px at 265px 263px);
     transition: all 0.5s;
 }
 
-header div.mask img {
-    height: 184px;
-    width: 647px;
+header figure.minimized {
+    transform: scale(0.48) translateX(392px);
+}
+
+header figure path:hover {
+    fill: #eadfdf;
+}
+
+header figure path {
+    fill: transparent;
 }
 
 section {
@@ -75,7 +213,7 @@ section > h2 {
     margin-left: 30px;
 }
 
-nav.sections {
+main > nav {
     background: #975259;
     width: 635px;
     position: relative;
@@ -84,14 +222,14 @@ nav.sections {
     left: 134px;
 }
 
-nav.sections ul {
+main > nav ul {
     list-style-type: none;
     margin: 0;
     /* padding: 0; */
     padding-left: 10px;
 }
 
-nav.sections li {
+main > nav li {
     display: inline-block;
     width: 52px;
     height: 52px;
@@ -106,7 +244,7 @@ nav.sections li {
     border-bottom: none;
 }
 
-nav.sections h1 {
+main > nav h1 {
     display: inline;
     font-size: 39px;
     color: #eadfdf;
@@ -117,20 +255,16 @@ nav.sections h1 {
     /* padding-right: 25%; */
 }
 
-nav.sections li:hover {
+main > nav li:hover {
     border-bottom: 2px solid #975259;
     background: #eadfdf;
 }
 
-nav.sections li:hover h1 {
+main > nav li:hover h1 {
     color: #975259;
 }
 
 nav.links {
-    display: none;
-}
-
-main {
     display: none;
 }
 
@@ -236,29 +370,59 @@ table.results-table tbody tr:hover {
     z-index: -99;
 }
 
-.main-map-fig {
+
+main section {
+    top: 290px;
+    position: absolute;
+    padding: 0;
+    width: 84%;
+    left: 134px;
+    display: none;
+}
+
+main section.active {
+    display: block;
+}
+
+aside {
     position: fixed;
-    right: -22px;
-    top: -141px;
-    transform: scale(0.88);
-    z-index: 1000;
-    background: url(./assets/voting_image_map.png);
-    background-position-x: 97px;
-    background-position-y: 90px;
-    background-repeat: no-repeat;
-    background-size: 323px;
-    clip-path: circle(184px at 265px 263px);
+    right: 0;
+    top: 0;
+    width: 157px;
+    height: 100vh;
+    padding-top: 195px;
+    background: transparent;
+    opacity: 0;
     transition: all 0.5s;
+    z-index: 1000000;
 }
 
-.main-map-fig.minimized {
-    transform: scale(0.48) translateX(392px);
+aside.active {
+    opacity: 1;
 }
 
-
-.main-map-fig path:hover {
-    fill: #eadfdf;
+aside nav {
+    z-index: 1000001;
 }
-.main-map-fig path {
-    fill: transparent;
+
+aside nav ul {
+    /* background: yellow; */
+    list-style: none;
+    font-size: 63%;
+    padding-left: 0;
+}
+
+aside nav ul li {
+    margin-left: 22px;
+    cursor: pointer;
+    border-left: #00000030 3px solid;
+    padding-left: 10px;
+    /* background: red; */
+}
+
+aside nav ul li:hover {
+    font-weight: 600;
+    margin-left: 0;
+    background: #00000024;
+    padding-left: 31px;
 }

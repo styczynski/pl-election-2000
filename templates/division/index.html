@@ -15,9 +15,9 @@
                         <i class="fa fa-compass"></i>
                     </figure>
                     <ul>
-                        {% for divisionID, trash in voting.voivodeships[voting.voivodeshipSubpageName].divisions.items() %}
-                            <li data-link-division="{{divisionID}}">
-                                Okręg {{divisionID}}
+                        {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                            <li data-link-commune="{{communeID}}">
+                                {{communeID}}
                             </li>
                         {% endfor %}
                     </ul>
@@ -36,6 +36,7 @@
                 <p>Wybory Prezydenta</p>
                 <p>Rzeczypospolitej Polskiej 2000r.</p>
                 <p>{{ voting.voivodeshipSubpageName }}</p>
+                <p>Okręg {{ voting.divisionSubpageNo }}</p>
             </h1>
             <figure class="main-map-fig">
                 <div id="main-map-chart"></div>
@@ -45,9 +46,9 @@
         <aside>
             <nav>
                 <ul>
-                     {% for divisionID, trash in voting.voivodeships[voting.voivodeshipSubpageName].divisions.items() %}
-                        <li data-link-division="{{divisionID}}">
-                            Okręg {{divisionID}}
+                     {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                        <li data-link-commune="{{communeID}}">
+                            {{communeID}}
                         </li>
                     {% endfor %}
                 </ul>
@@ -55,10 +56,6 @@
         </aside>
 
         <main>
-
-            <nav>
-                <ul></ul>
-            </nav>
 
             <ol style="display:none">
                 <li>
@@ -68,6 +65,9 @@
                 </li>
             </ol>
 
+             <nav>
+                <ul></ul>
+            </nav>
 
             <section>
                 <h2>Procentowa liczba głosów dla poszczególnych kandydatów</h2>
@@ -87,7 +87,7 @@
                         </tr>
                      </thead>
                     <tbody>
-                        {% for candidate, candidateData in voting.voivodeships[voting.voivodeshipSubpageName].candidates.items() %}
+                        {% for candidate, candidateData in voting.divisions[voting.divisionSubpageNo].candidates.items() %}
                             <tr>
                                 <td>{{candidateData.name}}</td>
                                 <td>{{candidateData.votesStr}}</td>
@@ -97,10 +97,10 @@
                      </tbody>
                 </table>
 
-                <table class="results-table">
+                 <table class="results-table">
                      <thead>
                         <tr>
-                            <th data-mode="toggle" data-type="string">Okręg</th>
+                            <th data-mode="toggle" data-type="string">Gmina</th>
                             <th data-mode="toggle" data-type="integer">Oddane głosy</th>
                             {% for candidate in voting.bestCandidates %}
                                 <th data-mode="toggle" data-type="percentage">{{candidate.label}}</th>
@@ -108,12 +108,12 @@
                         </tr>
                      </thead>
                     <tbody>
-                        {% for divisionID, trash in voting.voivodeships[voting.voivodeshipSubpageName].divisions.items() %}
-                            <tr data-link-division="{{divisionID}}">
-                                <td>Okręg {{divisionID}}</td>
-                                <td>{{voting.divisions[divisionID].cardsCollectedStr}}</td>
+                        {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                            <tr data-link-commune="{{communeID}}">
+                                <td>Gmina {{communeID}}</td>
+                                <td>{{voting.communes[communeID].cardsCollectedStr}}</td>
                                 {% for candidate in voting.bestCandidates %}
-                                    <td data-mode="toggle" data-type="integer">{{voting.divisions[divisionID].candidates[candidate.name].percentageStr}}</td>
+                                    <td data-mode="toggle" data-type="integer">{{voting.communes[communeID].candidates[candidate.name].percentageStr}}</td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -138,23 +138,23 @@
                     <tbody>
                         <tr>
                             <td>Uprawnionych do głosowania</td>
-                            <td>{{voting.voivodeships[voting.voivodeshipSubpageName].allowedStr}}</td>
+                            <td>{{voting.divisions[voting.divisionSubpageNo].allowedStr}}</td>
                         </tr>
                         <tr>
                             <td>Wydanych kart</td>
-                            <td>{{voting.voivodeships[voting.voivodeshipSubpageName].cardsReleasedStr}}</td>
+                            <td>{{voting.divisions[voting.divisionSubpageNo].cardsReleasedStr}}</td>
                         </tr>
                         <tr>
                             <td>Kart zebranych z urn</td>
-                            <td>{{voting.voivodeships[voting.voivodeshipSubpageName].cardsCollectedStr}}</td>
+                            <td>{{voting.divisions[voting.divisionSubpageNo].cardsCollectedStr}}</td>
                         </tr>
                         <tr>
                             <td>Głosów ważnych</td>
-                            <td>{{voting.voivodeships[voting.voivodeshipSubpageName].votesValidStr}}</td>
+                            <td>{{voting.divisions[voting.divisionSubpageNo].votesValidStr}}</td>
                         </tr>
                         <tr>
                             <td>Głosów nieważnych</td>
-                            <td>{{voting.voivodeships[voting.voivodeshipSubpageName].votesInvalidStr}}</td>
+                            <td>{{voting.divisions[voting.divisionSubpageNo].votesInvalidStr}}</td>
                         </tr>
                      </tbody>
                 </table>
@@ -173,19 +173,19 @@
                 <table class="results-table voting-frequency">
                     <thead>
                         <tr>
-                            <th data-mode="toggle" data-type="string">Okręg</th>
+                            <th data-mode="toggle" data-type="string">Gmina</th>
                             <th data-mode="toggle" data-type="integer">Uprawnionych</th>
                             <th data-mode="toggle" data-type="integer">Wydane karty</th>
                             <th data-mode="toggle" data-type="percentage">Frekwencja (%)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for divisionID, trash in voting.voivodeships[voting.voivodeshipSubpageName].divisions.items() %}
-                            <tr data-link-division="{{divisionID}}">
-                                <td>Okręg {{divisionID}}</td>
-                                <td>{{voting.divisions[divisionID].allowedStr}}</td>
-                                <td>{{voting.divisions[divisionID].cardsReleasedStr}}</td>
-                                <td>{{voting.divisions[divisionID].frequencyPercStr}}</td>
+                        {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                            <tr data-link-commune="{{communeID}}">
+                                <td>Gmina {{communeID}}</td>
+                                <td>{{voting.communes[communeID].allowedStr}}</td>
+                                <td>{{voting.communes[communeID].cardsReleasedStr}}</td>
+                                <td>{{voting.communes[communeID].frequencyPercStr}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

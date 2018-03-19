@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'header.tmpl' %}
+        <script>
+            const VOTING_DATA = {{ votingJSON | safe }};
+        </script>
+    </head>
+    <body>
+
+        <nav>
+            <ul>
+                <li>
+                    <figure>
+                        <i class="fa fa-compass"></i>
+                    </figure>
+                    <ul>
+                        {% for voivodeship, data in voting.voivodeships.items() %}
+                            <li data-link-voivodeship="{{voivodeship}}">
+                                {{voivodeship}}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                    <figure>
+                        <i class="fas fa-search"></i>
+                    </figure>
+                    <input type="text" size="35" placeholder="Znajdź region..."></input>
+                </li>
+            </ul>
+        </nav>
+
+         <header>
+            <h1>
+                <p>Wybory Prezydenta</p>
+                <p>Rzeczypospolitej Polskiej 2000r.</p>
+                <p>{{ voting.voivodeshipSubpageName }}</p>
+                <p>Okręg {{ voting.divisionSubpageNo }}, {{ voting.communeSubpageName }}</p>
+            </h1>
+            <figure class="main-map-fig">
+                <div id="main-map-chart"></div>
+            </figure>
+        </header>
+
+
+         <aside>
+            <nav>
+                <ul>
+                     {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                        <li data-link-commune="{{communeID}}">
+                            {{communeID}}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+
+            <ol style="display:none">
+                <li>
+                    <a href="http://www.example.com/">
+                        Polska
+                    </a>
+                </li>
+            </ol>
+
+            <nav>
+                <ul></ul>
+            </nav>
+
+            <section>
+                <h2>Procentowa liczba głosów dla poszczególnych kandydatów</h2>
+                <span class="section-icon" data-icon="fas fa-users"></span>
+
+                <figure>
+                    <!--<img src="./img/kd.png" border="0">-->
+                    <div id="votes-per-cand-chart"></div>
+                </figure>
+
+                <table class="results-table">
+                     <thead>
+                        <tr>
+                            <th data-mode="toggle" data-type="string">Kandydat</th>
+                            <th data-mode="toggle" data-type="integer">Oddane głosy</th>
+                            <th data-mode="toggle" data-type="percentage">Wynik (%)</th>
+                        </tr>
+                     </thead>
+                    <tbody>
+                        {% for candidate, candidateData in voting.communes[voting.communeSubpageName].candidates.items() %}
+                            <tr>
+                                <td>{{candidateData.name}}</td>
+                                <td>{{candidateData.votesStr}}</td>
+                                <td>{{candidateData.percentageStr}}</td>
+                            </tr>
+                        {% endfor %}
+                     </tbody>
+                </table>
+
+            </section>
+
+            <br>
+
+            <section>
+                <h2>Dane szczegółowe</h2>
+                <span class="section-icon" data-icon="fas fa-info"></span>
+
+                <table class="results-table">
+                     <thead>
+                        <tr>
+                            <th data-mode="toggle" data-type="string">Statystyka</th>
+                            <th data-mode="toggle" data-type="integer">Ilość</th>
+                        </tr>
+                     </thead>
+                    <tbody>
+                        <tr>
+                            <td>Uprawnionych do głosowania</td>
+                            <td>{{voting.communes[voting.communeSubpageName].allowedStr}}</td>
+                        </tr>
+                        <tr>
+                            <td>Wydanych kart</td>
+                            <td>{{voting.communes[voting.communeSubpageName].cardsReleasedStr}}</td>
+                        </tr>
+                        <tr>
+                            <td>Kart zebranych z urn</td>
+                            <td>{{voting.communes[voting.communeSubpageName].cardsCollectedStr}}</td>
+                        </tr>
+                        <tr>
+                            <td>Głosów ważnych</td>
+                            <td>{{voting.communes[voting.communeSubpageName].votesValidStr}}</td>
+                        </tr>
+                        <tr>
+                            <td>Głosów nieważnych</td>
+                            <td>{{voting.communes[voting.communeSubpageName].votesInvalidStr}}</td>
+                        </tr>
+                     </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Statystyka ogółem</h2>
+                <table width="100%" border="0" cellspacing="2" cellpadding="1" align="center">
+
+                </table>
+            </section>
+
+            <br>
+            <footer></footer>
+        </main>
+
+    </body>
+</html>
