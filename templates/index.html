@@ -14,26 +14,24 @@
                     <figure>
                         <i class="fa fa-compass"></i>
                     </figure>
-                    <ul>
-                        {% for voivodeship, data in voting.voivodeships.items() %}
-                            <li data-link-voivodeship="{{voivodeship}}">
-                                {{voivodeship}}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <span class="wx-wrapper">
+                        <ul>
+                            {% for voivodeship, data in voting.voivodeships.items() %}
+                                <li data-link-voivodeship="{{voivodeship}}">
+                                    {{voivodeship}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </span>
                 </li>
                 <li>
                     <figure>
                         <i class="fas fa-search"></i>
                     </figure>
                     <input type="text" size="35" placeholder="Znajdź region..." />
-                    <ol>
-                        <li>Wynik 1</li>
-                        <li>Wynik 2</li>
-                        <li>Wynik 3</li>
-                        <li>Wynik 4</li>
-                        <li>Wynik 5</li>
-                    </ol>
+                    <span class="wxx-wrapper">
+                        <ol></ol>
+                    <span>
                 </li>
             </ul>
         </nav>

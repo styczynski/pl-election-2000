@@ -386,7 +386,29 @@ $(document).ready(function() {
             });
 
         };
+
+        self.installLinkAtDOM = function(el) {
+            var self = $(el);
+            self.click(function() {
+                var voivodeshipFullName = self.data('link-voivodeship');
+                var divisionNo = self.data('link-division');
+                var communeName = self.data('link-commune');
+
+                if (voivodeshipFullName !== null && voivodeshipFullName !== undefined) {
+                    if (VOTING_DATA.voivodeshipCodes[voivodeshipFullName]) {
+                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
+                    }
+                } else if (divisionNo !== null && divisionNo !== undefined) {
+                    window.location = VOTING_DATA.divisionSubpageUrl + divisionNo + '.html';
+                } else if (communeName !== null && communeName !== undefined) {
+                    window.location = VOTING_DATA.communeSubpageUrl + communeName + '.html';
+                }
+            });
+        };
+
         self.__installClickHooks = function() {
+
+            var maputils = self;
 
             var toSearch = [];
             Object.keys(VOTING_DATA.search.voivodeships).forEach(function(voivodeshipName){
@@ -415,16 +437,28 @@ $(document).ready(function() {
                     name: communeName
                 });
             });
+            window.VOTE_DATA_SEARCH = toSearch;
+
 
             $('body > nav ul li input').each(function(){
                 var self = $(this);
                 var resultsList = self.parent().find('ol');
+                var updatesRequested = 0;
 
                 self.keypress(function(){
                     var content = self.val();
                     var results = [];
 
-                    results = fuzzysort.go(content, toSearch, {key: 'textData'}).map(function(result){
+                    if(updatesRequested >= 2) {
+                        return;
+                    } else {
+                        ++updatesRequested;
+                    }
+
+                    console.log('request fuzzy search');
+
+                    results = fuzzysort.go(content, toSearch, {key: 'textData'}).slice(0, 15).map(function(result) {
+
                         var resultNode = $('<li></li>');
                         resultNode.text(result.obj.label);
 
@@ -439,8 +473,11 @@ $(document).ready(function() {
                         return resultNode;
                     });
 
+                    --updatesRequested;
+
                     resultsList.children().remove();
                     results.forEach(function(item) {
+                        maputils.installLinkAtDOM(item);
                         item.appendTo(resultsList);
                     });
                 });
@@ -506,23 +543,8 @@ $(document).ready(function() {
                 updateHoverClasses();
             })
 
-            $('[data-link-voivodeship],[data-link-division],[data-link-commune]').click(function() {
-                var self = $(this);
-                var voivodeshipFullName = self.data('link-voivodeship');
-                var divisionNo = self.data('link-division');
-                var communeName = self.data('link-commune');
-
-
-                if (voivodeshipFullName !== null && voivodeshipFullName !== undefined) {
-                    if (VOTING_DATA.voivodeshipCodes[voivodeshipFullName]) {
-                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
-                    }
-                } else if(divisionNo !== null && divisionNo !== undefined) {
-                    window.location = VOTING_DATA.divisionSubpageUrl + divisionNo + '.html';
-                } else if(communeName !== null && communeName !== undefined) {
-                    window.location = VOTING_DATA.communeSubpageUrl + communeName + '.html';
-                }
-
+            $('[data-link-voivodeship],[data-link-division],[data-link-commune]').each(function(){
+                self.installLinkAtDOM(this);
             });
 
             $('.results-table').each(function() {

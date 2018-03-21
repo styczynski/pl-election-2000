@@ -14,19 +14,24 @@
                     <figure>
                         <i class="fa fa-compass"></i>
                     </figure>
-                    <ul>
-                        {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
-                            <li data-link-commune="{{communeID}}">
-                                {{communeID}}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <span class="wx-wrapper">
+                        <ul>
+                            {% for communeID, trash in voting.divisions[voting.divisionSubpageNo].communes.items() %}
+                                <li data-link-commune="{{communeID}}">
+                                    {{communeID}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </span>
                 </li>
                 <li>
                     <figure>
                         <i class="fas fa-search"></i>
                     </figure>
                     <input type="text" size="35" placeholder="Znajdź region..."></input>
+                    <span class="wxx-wrapper">
+                        <ol></ol>
+                    <span>
                 </li>
             </ul>
         </nav>
