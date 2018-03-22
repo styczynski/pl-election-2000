@@ -1,9 +1,0 @@
-.idea/**
-.idea
-.idea/**/*
-*.iws
-**/__pycache__/**
-__pycache__
-templates_backup
-venv
-build
