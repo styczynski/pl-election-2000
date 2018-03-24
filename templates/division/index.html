@@ -2,9 +2,6 @@
 <html>
     <head>
         {% include 'header.tmpl' %}
-        <script>
-            const VOTING_DATA = {{ votingJSON | safe }};
-        </script>
     </head>
     <body>
 
@@ -193,24 +190,6 @@
                                 <td>{{voting.communes[communeID].frequencyPercStr}}</td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-
-                <table width="100%" cellspacing="2" cellpadding="1" border="0">
-                    <tbody>
-                        <tr>
-                            <td width="100%">
-                                <table border="0" width="100%">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/020000.html">WOJ. DOLNOŚLĄSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/040000.html">WOJ. KUJAWSKO-POMORSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/060000.html">WOJ. LUBELSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/080000.html">WOJ. LUBUSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/100000.html">WOJ. ŁÓDZKIE</a><br></td>
-                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/120000.html">WOJ. MAŁOPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/140000.html">WOJ. MAZOWIECKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/160000.html">WOJ. OPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/180000.html">WOJ. PODKARPACKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/200000.html">WOJ. PODLASKIE</a><br></td>
-                                            <td valign="top" width="33%"><a href="http://prezydent2000.pkw.gov.pl/wb/woj/220000.html">WOJ. POMORSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/240000.html">WOJ. ŚLĄSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/260000.html">WOJ. ŚWIĘTOKRZYSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/280000.html">WOJ. WARMIŃSKO-MAZURSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/300000.html">WOJ. WIELKOPOLSKIE</a><br><a href="http://prezydent2000.pkw.gov.pl/wb/woj/320000.html">WOJ. ZACHODNIOPOMORSKIE</a><br></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </section>

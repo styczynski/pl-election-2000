@@ -226,6 +226,8 @@ class DataGenerator:
             'search': generatedDataSearch
         }
 
+        data['votingJSONFull'] = json.dumps(data['voting'])
+        
         self.cache = data
         return data
 
@@ -244,6 +246,8 @@ class DataGenerator:
         data['voting']['voivodeshipSubpageName'] = voivodeshipName
         data['voting']['divisionSubpageNo'] = divisionNo
         data['voting']['communeSubpageName'] = communeName
+
+        #data['votingJSONFull'] = json.dumps(data['voting'], indent=4, separators=(',', ': '))
 
         divisionCap = {}
         communeCap = {}
@@ -264,7 +268,7 @@ class DataGenerator:
             communeCap = data['voting']['communes']
             data['voting']['communes'] = {k: v for (k, v) in communeCap.items() if v['voivodeshipName'] == voivodeshipName and v['votingDivisionNo'] == divisionNo}
 
-        data['votingJSON'] = json.dumps(data['voting'], indent=4, separators=(',', ': '))
+        #data['votingJSON'] = json.dumps(data['voting'], indent=4, separators=(',', ': '))
 
         data['voting']['divisions'] = divisionCap
         data['voting']['communes'] = communeCap

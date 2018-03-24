@@ -10,6 +10,8 @@ from multiprocessing import Pool
 import webbrowser
 from datetime import datetime
 from progress.bar import Bar
+from jsmin import jsmin
+from html5print import HTMLBeautifier
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 from watchdog.events import FileSystemEventHandler
@@ -45,7 +47,7 @@ def renderSubtemplate(templateOutputPathForSubfile, template, templateDataGenera
 
     with open(templateOutputPathForSubfile, 'wb') as out:
         out.write(
-            template.render(**templateParametersForSubfile).encode('utf-8')
+            HTMLBeautifier.beautify(template.render(**templateParametersForSubfile), 4).encode('utf-8')
         )
 
 def subtemplateMapping(propsList):
@@ -105,12 +107,6 @@ def renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPos
 
     bar.finish()
 
-    #for i in pool.imap_unordered(f, range(3)):
-    #    print(i)
-
-    #pool.imap_unordered(subtemplateMapping, subtemplatesArgs)
-    #bar.finish()
-
 
 def generateTemplates():
     start_time = datetime.now()
@@ -123,181 +119,160 @@ def generateTemplates():
     templatesEntrypoints = {}
     templatePathsList = os.listdir(config['TEMPLATES_DIRECTORY'])
 
-    #try:
+    try:
 
-    templateGlobalDataGenerator = None
+      templateGlobalDataGenerator = None
 
-    print(f'[?] Look for templates inside {config["TEMPLATES_DIRECTORY"]}')
-    bar = Bar(f'Searching directories...', max=len(templatePathsList))
+      print(f'[?] Look for templates inside {config["TEMPLATES_DIRECTORY"]}')
+      bar = Bar(f'Searching directories...', max=len(templatePathsList))
 
-    for templatePath in templatePathsList:
-        if os.path.isdir(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}'):
-            if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.html') or os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.py'):
-                templatesEntrypointsConfigPy = None
-                templatesEntrypointsJS = None
-                templatesEntrypointsCSS = None
+      for templatePath in templatePathsList:
+          if os.path.isdir(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}'):
+              if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.html') or os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.py'):
+                  templatesEntrypointsConfigPy = None
+                  templatesEntrypointsJS = None
+                  templatesEntrypointsCSS = None
 
-                if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.py'):
-                    templatesEntrypointsConfigPy = f'{config["TEMPLATES_PACKAGE"]}.{templatePath}.index'
+                  if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.py'):
+                      templatesEntrypointsConfigPy = f'{config["TEMPLATES_PACKAGE"]}.{templatePath}.index'
 
-                if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.js'):
-                    templatesEntrypointsJS = f'{templatePath}/index.js'
+                  if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.js'):
+                      templatesEntrypointsJS = f'{templatePath}/index.js'
 
-                if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.css'):
-                    templatesEntrypointsCSS = f'{templatePath}/index.css'
+                  if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.css'):
+                      templatesEntrypointsCSS = f'{templatePath}/index.css'
 
-                templateInputPath = f'{templatePath}/index.html'
+                  templateInputPath = f'{templatePath}/index.html'
 
-                if not os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.html'):
-                    if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.html'):
-                        templateInputPath = 'index.html'
+                  if not os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.html'):
+                      if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.html'):
+                          templateInputPath = 'index.html'
 
-                templatesEntrypoints[f'{templatePath}/index.html'] = {
-                    'input': templateInputPath,
-                    'output': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.html',
-                    'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}',
-                    'outputPostfix': f'.html',
-                    'configPy': templatesEntrypointsConfigPy,
-                    'inputJS': templatesEntrypointsJS,
-                    'inputCSS': templatesEntrypointsCSS,
-                    'outputJS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.js',
-                    'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.css'
-                }
-        bar.next()
-    bar.finish()
+                  templatesEntrypoints[f'{templatePath}/index.html'] = {
+                      'input': templateInputPath,
+                      'output': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.html',
+                      'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}',
+                      'outputPostfix': f'.html',
+                      'configPy': templatesEntrypointsConfigPy,
+                      'inputJS': templatesEntrypointsJS,
+                      'inputCSS': templatesEntrypointsCSS,
+                      'outputJS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.js',
+                      'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.css'
+                  }
+          bar.next()
+      bar.finish()
 
-    if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.html'):
-        templatesEntrypointsConfigPy = None
-        templatesEntrypointsJS = None
-        templatesEntrypointsCSS = None
+      if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.html'):
+          templatesEntrypointsConfigPy = None
+          templatesEntrypointsJS = None
+          templatesEntrypointsCSS = None
 
-        if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.js'):
-            templatesEntrypointsJS = f'index.js'
+          if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.js'):
+              templatesEntrypointsJS = f'index.js'
 
-        if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.css'):
-            templatesEntrypointsCSS = f'index.css'
+          if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.css'):
+              templatesEntrypointsCSS = f'index.css'
 
-        if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.py'):
-            #templatesEntrypointsConfigPy = f'{TEMPLATES_PACKAGE}.index'
-            #templateData
-            print('[i] Prepare global DataGenerator...')
+          if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.py'):
+              print('[i] Prepare global DataGenerator...')
 
-            templateConfigModule = importlib.import_module(f'{config["TEMPLATES_PACKAGE"]}.index')
-            templateConfigModule = importlib.reload(templateConfigModule)
+              templateConfigModule = importlib.import_module(f'{config["TEMPLATES_PACKAGE"]}.index')
+              templateConfigModule = importlib.reload(templateConfigModule)
 
-            templateGlobalDataGenerator = templateConfigModule.DataGenerator(f'{config["TEMPLATES_DIRECTORY"]}/index.html', config)
+              templateGlobalDataGenerator = templateConfigModule.DataGenerator(f'{config["TEMPLATES_DIRECTORY"]}/index.html', config)
 
-            templateDataPrepared = templateGlobalDataGenerator.prepareData(templateData, 'default', 0)
-            if templateDataPrepared is not None:
-                templateData = templateDataPrepared
+              templateDataPrepared = templateGlobalDataGenerator.prepareData(templateData, 'default', 0)
+              if templateDataPrepared is not None:
+                  templateData = templateDataPrepared
 
-            print('[i] Save global DataGenerator...')
+              print('[i] Save global DataGenerator...')
 
-        templatesEntrypoints[f'index.html'] = {
-            'input': 'index.html',
-            'output': f'{config["OUTPUT_DIRECTORY"]}/index.html',
-            'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/index',
-            'outputPostfix': f'.html',
-            'configPy': None,
-            'inputJS': templatesEntrypointsJS,
-            'inputCSS': templatesEntrypointsCSS,
-            'outputJS': f'{config["OUTPUT_DIRECTORY"]}/index.js',
-            'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/index.css'
-        }
+          templatesEntrypoints[f'index.html'] = {
+              'input': 'index.html',
+              'output': f'{config["OUTPUT_DIRECTORY"]}/index.html',
+              'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/index',
+              'outputPostfix': f'.html',
+              'configPy': None,
+              'inputJS': templatesEntrypointsJS,
+              'inputCSS': templatesEntrypointsCSS,
+              'outputJS': f'{config["OUTPUT_DIRECTORY"]}/index.js',
+              'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/index.css'
+          }
 
-    pathlib.Path(config['OUTPUT_DIRECTORY']).mkdir(parents=True, exist_ok=True)
+      pathlib.Path(config['OUTPUT_DIRECTORY']).mkdir(parents=True, exist_ok=True)
 
-    print(f'[i] Found {len(templatesEntrypoints)} subpage/-s templates.')
+      print(f'[i] Found {len(templatesEntrypoints)} subpage/-s templates.')
 
 
-    print('[i] Generate templates...')
-    for templateID, templateConfig in templatesEntrypoints.items():
-        templateInputPath = templateConfig['input']
-        templateOutputPath = templateConfig['output']
-        templateOutputPrefix = templateConfig['outputPrefix']
-        templateOutputPostfix = templateConfig['outputPostfix']
-        templateConfigPy = templateConfig['configPy']
-        templateConfigModule = None
+      print('[i] Generate templates...')
+      for templateID, templateConfig in templatesEntrypoints.items():
+          templateInputPath = templateConfig['input']
+          templateOutputPath = templateConfig['output']
+          templateOutputPrefix = templateConfig['outputPrefix']
+          templateOutputPostfix = templateConfig['outputPostfix']
+          templateConfigPy = templateConfig['configPy']
+          templateConfigModule = None
 
-        if templateConfigPy is not None:
-            templateConfigModule = importlib.import_module(templateConfigPy)
-            templateConfigModule = importlib.reload(templateConfigModule)
+          if templateConfigPy is not None:
+              templateConfigModule = importlib.import_module(templateConfigPy)
+              templateConfigModule = importlib.reload(templateConfigModule)
 
-        print(f'    * Generate template {templateInputPath} -> {templateOutputPath}')
-        jinjaEnv = Environment(
-            loader=FileSystemLoader(config['TEMPLATES_DIRECTORY']),
-            autoescape=select_autoescape(['html','xml'])
-        )
+          print(f'    * Generate template {templateInputPath} -> {templateOutputPath}')
+          jinjaEnv = Environment(
+              loader=FileSystemLoader(config['TEMPLATES_DIRECTORY']),
+              autoescape=select_autoescape(['html','xml'])
+          )
 
-        templateParameters = {**templateData, **templateParametersPredefined}
+          templateParameters = {**templateData, **templateParametersPredefined}
 
-        templateDataGenerator = None
+          templateDataGenerator = None
 
-        if templateConfigModule is not None:
-            print(f'        - Load DataGenerator...')
-            templateDataGenerator = templateConfigModule.DataGenerator(templateInputPath, config, templateGlobalDataGenerator)
-            print(f'        - Loaded DataGenerator')
+          if templateConfigModule is not None:
+              print(f'        - Load DataGenerator...')
+              templateDataGenerator = templateConfigModule.DataGenerator(templateInputPath, config, templateGlobalDataGenerator)
+              print(f'        - Loaded DataGenerator')
 
-        template = jinjaEnv.get_template(templateInputPath)
+          template = jinjaEnv.get_template(templateInputPath)
 
-        if templateDataGenerator is None:
-            with open(templateOutputPath, 'wb') as out:
-                out.write(
-                    template.render(**templateParameters).encode('utf-8')
-                )
-        elif not hasattr(templateDataGenerator, 'getFileNames'):
-            templateParametersPrepared = templateDataGenerator.prepareData(templateParameters, 'default', 0)
-            if templateParametersPrepared is not None:
-                templateParameters = templateParametersPrepared
+          if templateDataGenerator is None:
+              with open(templateOutputPath, 'wb') as out:
+                  out.write(
+                      HTMLBeautifier.beautify(template.render(**templateParameters), 4).encode('utf-8')
+                  )
+          elif not hasattr(templateDataGenerator, 'getFileNames'):
+              templateParametersPrepared = templateDataGenerator.prepareData(templateParameters, 'default', 0)
+              if templateParametersPrepared is not None:
+                  templateParameters = templateParametersPrepared
 
-            with open(templateOutputPath, 'wb') as out:
-                out.write(
-                    template.render(**templateParameters).encode('utf-8')
-                )
-        else:
+              with open(templateOutputPath, 'wb') as out:
+                  out.write(
+                      HTMLBeautifier.beautify(template.render(**templateParameters), 4).encode('utf-8')
+                  )
+          else:
 
-            renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPostfix,
-                               templateInputPath, templateDataGenerator, templateParameters)
+              renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPostfix,
+                                 templateInputPath, templateDataGenerator, templateParameters)
 
-            #templateDataFilenames = templateDataGenerator.getFileNames()
-            #indexNo = 0
 
-            #bar = Bar(f'Processing template {templateID}', max=len(templateDataFilenames))
+          if (templateConfig['inputJS'] is not None) and (templateConfig['outputJS'] is not None):
+              print(f'        - Generate JS')
+              template = jinjaEnv.get_template(templateConfig['inputJS'])
+              print(f'        - Save JS')
+              with open(templateConfig['outputJS'], 'wb') as out:
+                  out.write(
+                      jsmin(template.render(**templateParameters)).encode('utf-8')
+                  )
 
-            #subtemplatesArgs = []
-
-            #
-            # renderSubtemplate(templateDataFilenames, templateOutputPrefix, templateOutputPostfix, template, templateDataGenerator, templateParameters, templateDataFilename, indexNo)
-
-            #
-            #for templateDataFilename in templateDataFilenames:
-            #    templateParametersForSubfile = templateParameters
-            #    templateOutputPathForSubfile = f'{templateOutputPrefix}_{templateDataFilename}{templateOutputPostfix}'
-            #    renderSubtemplate(templateOutputPathForSubfile, template, templateDataGenerator, templateParameters, templateDataFilename, indexNo)
-            #    indexNo = indexNo + 1
-            #    #if indexNo % 50 == 0:
-            #    bar.next()
-            #bar.finish()
-
-        if (templateConfig['inputJS'] is not None) and (templateConfig['outputJS'] is not None):
-            print(f'        - Generate JS')
-            template = jinjaEnv.get_template(templateConfig['inputJS'])
-            print(f'        - Save JS')
-            with open(templateConfig['outputJS'], 'wb') as out:
-                out.write(
-                    template.render(**templateParameters).encode('utf-8')
-                )
-
-        if (templateConfig['inputCSS'] is not None) and (templateConfig['outputCSS'] is not None):
-            print(f'        - Generate CSS')
-            template = jinjaEnv.get_template(templateConfig['inputCSS'])
-            print(f'        - Save CSS')
-            with open(templateConfig['outputCSS'], 'wb') as out:
-                out.write(
-                    template.render(**templateParameters).encode('utf-8')
-                )
-    #except:
-    #    print(f'[!] Unexpected error: {sys.exc_info()[0]}')
+          if (templateConfig['inputCSS'] is not None) and (templateConfig['outputCSS'] is not None):
+              print(f'        - Generate CSS')
+              template = jinjaEnv.get_template(templateConfig['inputCSS'])
+              print(f'        - Save CSS')
+              with open(templateConfig['outputCSS'], 'wb') as out:
+                  out.write(
+                      template.render(**templateParameters).encode('utf-8')
+                  )
+    except:
+        print(f'[!] Unexpected error: {sys.exc_info()[0]}')
 
     time_elapsed = datetime.now() - start_time
     pool.close()

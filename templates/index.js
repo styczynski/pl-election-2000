@@ -1,4 +1,6 @@
 
+const VOTING_DATA = {{ votingJSONFull | safe }};
+
 var PIE_COLORS = [
     "#944a4a",
     "#6e5454",
@@ -19,15 +21,29 @@ $(document).ready(function() {
         var sectionsNavList = $("main > nav > ul");
         self.displayedIndex = 0;
         self.sections = [];
+        self.redrawMaps = null;
         self.switchTo = function changeContentView(index) {
             console.log("! Switch to "+index);
             self.displayedIndex = index;
             $("main section.active").removeClass('active');
             $($("main section.section-"+index)).addClass('active');
+            if(self.redrawMaps) {
+                self.redrawMaps();
+            }
         };
         self.init = function() {
-            self.__createChart();
-            self.__loadMaps();
+
+            self.redrawMaps = (function() {
+                console.log('Redraw maps...');
+                self.__createChart();
+                self.__loadMaps();
+            });
+
+            $(window).resize(function() {
+                self.redrawMaps();
+            });
+
+            self.redrawMaps();
             self.__installClickHooks();
 
             $("main section > .section-icon").each(function(index){
@@ -90,7 +106,7 @@ $(document).ready(function() {
                     center: {lat: -22.15, lng: -42.9},
                     zoom: 8
                 },
-                geoJson: "{{assets}}/powiaty.geojson",
+                geoJson: "./assets/powiaty.geojson",
                 geoJsonOptions: {
                     idPropertyName: "name"
                 }
@@ -224,8 +240,8 @@ $(document).ready(function() {
                     region: 'PL',
                     resolution: 'provinces',
                     backgroundColor: 'transparent',
-                    height: 500,
-                    width: 500,
+                    height: '100%',
+                    width: '100%',
                     tooltip: {
                         isHtml: true
                     },
@@ -240,8 +256,9 @@ $(document).ready(function() {
                         var voivodeshipFullName = Object.values(VOTING_DATA.voivodeships).filter(function(voivodeship){
                             return voivodeship.voivodeshipCode == eventData.region;
                         })[0];
+
                         if(voivodeshipFullName) {
-                            window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
+                            window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName.name + '.html';
                         };
                   };
                   google.visualization.events.addListener(chart, 'regionClick', clickRegion);
@@ -445,7 +462,7 @@ $(document).ready(function() {
                 var resultsList = self.parent().find('ol');
                 var updatesRequested = 0;
 
-                self.keypress(function(){
+                var changeHandler = (function(){
                     var content = self.val();
                     var results = [];
 
@@ -481,6 +498,9 @@ $(document).ready(function() {
                         item.appendTo(resultsList);
                     });
                 });
+
+                self.keydown(changeHandler);
+                self.on('input propertychange', changeHandler);
             });
 
             $('body > nav ul li').each(function(){
@@ -623,6 +643,7 @@ $(document).ready(function() {
 
         self.__createChart = function() {
 
+            $("#votes-per-cand-chart").children().remove();
 
             var pieVotesConfigArray = [];
 
@@ -703,10 +724,16 @@ $(document).ready(function() {
                     }
                 }
             });
+
+            $("#votes-per-cand-chart svg")
+                .attr('width', '100%')
+                .attr('height', '100%')
+                .attr('viewBox', '0 0 850 450');
+
         };
         return self;
     }
     var view = new ContentsView();
     view.init();
     window.contentsView = view;
-})
+});
