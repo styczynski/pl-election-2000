@@ -118,9 +118,7 @@
                     Okręg 58, Iława
                 </p>
             </h1>
-            <figure class="main-map-fig">
-                <div id="main-map-chart">
-                </div>
+            <figure id="main-map-chart">
             </figure>
         </header>
         <aside>
@@ -312,16 +310,13 @@
                 </h2>
                 <span class="section-icon" data-icon="fas fa-users">
                 </span>
-                <figure>
-                    <!--<img src="./img/kd.png" border="0">-->
-                    <div id="votes-per-cand-chart">
-                    </div>
+                <figure id="votes-per-cand-chart">
                 </figure>
                 <table class="results-table">
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">
-        Kandydat
+                                Kandydat
                             </th>
                             <th data-mode="toggle" data-type="integer">
                                 Oddane głosy
@@ -467,13 +462,16 @@
                     </tbody>
                 </table>
             </section>
-            <br/>
             <section>
                 <h2>
                     Dane szczegółowe
                 </h2>
                 <span class="section-icon" data-icon="fas fa-info">
                 </span>
+                <figure id="votes-invalid-rate-chart">
+                </figure>
+                <figure id="votes-by-region-chart">
+                </figure>
                 <table class="results-table">
                     <thead>
                         <tr>
@@ -536,9 +534,25 @@
                 <table align="center" border="0" cellpadding="1" cellspacing="2" width="100%">
                 </table>
             </section>
-            <br/>
             <footer>
+                <p>
+                    Piotr Styczyński @2018
+                </p>
+                <p>
+                    Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)
+                </p>
+                <p>
+                    @styczynski
+                </p>
+                <a href="https://github.com/styczynski/pl-election-2000">
+                    <img src="https://avatars2.githubusercontent.com/u/7319352?s=460&amp;v=4"/>
+                </a>
             </footer>
         </main>
+        <script async="" type="text/javascript">
+            setLocationHints('WARMIŃSKO-MAZURSKIE', '58', 'Iława');
+        </script>
+        <script async="" src="./voting_data.js">
+        </script>
     </body>
 </html>
