@@ -1,3 +1,9 @@
+#
+#  Piotr Styczyński @styczynski
+#  March 2018 MIT LICENSE
+#
+#
+
 class DataGenerator:
 
     def __init__(self, path, config, globalGenerator):
@@ -6,7 +12,7 @@ class DataGenerator:
 
     def getFileNames(self):
         data = self.globalGenerator.generateScopedData()
-        return list(data['voting']['divisions'].keys())[:1]
+        return list(data['voting']['divisions'].keys())
 
     def prepareData(self, data, fileName, fileIndex):
         data = self.globalGenerator.generateScopedData(data, None, fileName)

@@ -1,6 +1,162 @@
 #!/usr/bin/env bash
 
-echo ""
+#########################################
+#  Fast pythonic static site generator  #
+#########################################
+
+#
+#
+# Generate script
+#
+#   Proxy forwarding to python generate.py static site generator.
+#
+#   Configure PYTHON_EXECUTABLE, PIP_EXECUTABLE and VIRTUALENV_EXECUTABLE
+#   to set up executable names.
+#
+#   Static site generator needs at least Python 3.
+#
+#    Usage:
+#        ./generate <mode>
+#
+#        Whre mode is:
+#            init
+#                Automatically create virtual environment for execution
+#                Skip if it actually exists.
+#
+#            reset
+#                Automatically create virtual environment for execution
+#                Override any previous one.
+#
+#            build
+#                Build static site.
+#                Output files to ./build
+#
+#            server [alias: dev]
+#                Run static server at localhost:8000 with auto rebuild
+#
+#            release
+#                Prepare release-ready version of files
+#
+#            up
+#                Alias for executing setup and then server command
+#
+#
+#  Piotr Styczyński @styczynski
+#  March 2018 MIT LICENSE
+#
+#
+
+PYTHON_EXECUTABLE=python
+PIP_EXECUTABLE=pip
+VIRTUALENV_EXECUTABLE=virtualenv
+
 echo "[i] === Generate bash script version 1.0.0 ==="
-python -m generate "$@"
-echo "[i] Terminate process shell."
+
+
+${PIP_EXECUTABLE} --version > /dev/null 2> /dev/null
+result="$?"
+
+if [ ! "$result" = "0" ]; then
+    echo "[!] Could not find python 3: \"${PIP_EXECUTABLE} --version\" not work!"
+    echo "[.] Trying with \"python3\"..."
+    PYTHON_EXECUTABLE=python3
+    ${PIP_EXECUTABLE} --version > /dev/null 2> /dev/null
+    result="$?"
+fi
+
+if [ ! "$result" = "0" ]; then
+    echo "[!] Could not find python 3: \"${PIP_EXECUTABLE} --version\" not work!"
+    echo "[.] Trying with \"python\"..."
+    PYTHON_EXECUTABLE=python
+    ${PIP_EXECUTABLE} --version > /dev/null 2> /dev/null
+    result="$?"
+fi
+
+if [ ! "$result" = "0" ]; then
+    echo "[!] Could not find python 3: \"${PIP_EXECUTABLE} --version\" not work!"
+    echo "[!] Program will terminate."
+    echo "[i] Please configure ./generate script before executing"
+    echo "[i] Or link python 3 executable."
+    exit 1
+fi
+
+if [ "$1" = "reset" ]; then
+    echo "[i] Install virtualenv by pip.."
+    ${PIP_EXECUTABLE} install virtualenv
+
+    echo "[i] Create virtual environment..."
+    ${VIRTUALENV_EXECUTABLE} python-env
+
+    echo "[i] Activate environment..."
+    source ./python-env/Scripts/activate
+
+    echo "[i] Install requirements..."
+    ${PIP_EXECUTABLE} install -r requirements.txt
+
+    echo "[i] Deactivate environment..."
+    deactivate
+    
+    echo "[i] Virtual env set up DONE"
+else
+
+    if [ "$1" = "init" ]; then
+        if [ -d ./python-env ]; then
+            echo "[i] Virtual environment exists so skip initialization."
+            
+        else
+            echo "[i] Install virtualenv by pip.."
+            ${PIP_EXECUTABLE} install virtualenv
+
+            echo "[i] Create virtual environment..."
+            ${VIRTUALENV_EXECUTABLE} python-env
+
+            echo "[i] Activate environment..."
+            source ./python-env/Scripts/activate
+
+            echo "[i] Install requirements..."
+            ${PIP_EXECUTABLE} install -r requirements.txt
+
+            echo "[i] Deactivate environment..."
+            deactivate
+            
+            echo "[i] Virtual env set up DONE"
+        
+        fi
+    else
+
+        if [ "$1" = "up" ]; then
+        
+            echo "[i] Enter fast init-dev mode."
+            ./generate init
+            ./generate dev
+        
+        else
+
+            if [ -d ./python-env ]; then
+                
+                source ./python-env/Scripts/activate
+                
+                echo ""
+                echo " --- Executing in virtual environment ---"
+                echo ""
+                ${PYTHON_EXECUTABLE} -m generate "$@"
+                echo "[i] Terminate process shell / deactivated environment."
+                
+                deactivate
+                
+            else
+                echo ""
+                echo "[i] === Generate bash script version 1.0.0 ==="
+                echo ""
+                echo "[!] WARNNING! Running without local virtual env configured!"
+                echo "[!]           Execute 'generate setup' command to initialize one!"
+                echo ""
+                ${PYTHON_EXECUTABLE} -m generate "$@"
+                echo "[i] Terminate process shell."
+            fi
+        
+        fi
+
+    fi
+
+fi

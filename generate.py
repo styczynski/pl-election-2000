@@ -1,3 +1,43 @@
+
+#########################################
+#  Fast pythonic static site generator  #
+#########################################
+
+#
+#
+#   Static site generator needs at least Python 3.
+#
+#    Usage:
+#        ./generate <mode>
+#
+#        Whre mode is:
+#            init
+#                Automatically create virtual environment for execution
+#                Skip if it actually exists.
+#
+#            reset
+#                Automatically create virtual environment for execution
+#                Override any previous one.
+#
+#            build
+#                Build static site.
+#                Output files to ./build
+#
+#            server [alias: dev]
+#                Run static server at localhost:8000 with auto rebuild
+#
+#            release
+#                Prepare release-ready version of files
+#
+#            up
+#                Alias for executing setup and then server command
+#
+#
+#  Piotr Styczyński @styczynski
+#  March 2018 MIT LICENSE
+#
+#
+
 from jinja2 import Environment,PackageLoader,FileSystemLoader
 from jinja2 import select_autoescape
 import importlib
@@ -303,18 +343,21 @@ def generateTemplates():
                   inputJS = JSFile["input"]
                   name = JSFile["name"]
               
-                  print(f'        - Generate JS module: {name}...')
+                  print(f'        - Generating JS module: {name}...')
                   template = jinjaEnv.get_template(inputJS)
-                  print(f'        - Save JS module...')
+                  print(f'            -> Render module')
+                  renderedModule = template.render(**templateParameters)
+                  
                   with open(outputJS, 'wb') as out:
                       if MODE is 'release':
-                          print(f'        - Minify JS module...')
+                          print(f'            -> Minify JS module')
                           out.write(
-                              jsmin(template.render(**templateParameters)).encode('utf-8')
+                              jsmin(renderedModule).encode('utf-8')
                           )
                       else:
+                          print(f'            -> Save JS module')
                           out.write(
-                              (template.render(**templateParameters)).encode('utf-8')
+                              (renderedModule).encode('utf-8')
                           )
 
           if (templateConfig['inputCSS'] is not None) and (templateConfig['outputCSS'] is not None):
