@@ -39,9 +39,7 @@
                 <p>Rzeczypospolitej Polskiej 2000r.</p>
                 <p>{{ voting.voivodeshipSubpageName }}</p>
             </h1>
-            <figure class="main-map-fig">
-                <div id="main-map-chart"></div>
-            </figure>
+            <figure id="main-map-chart"></figure>
         </header>
 
         <aside>
@@ -75,10 +73,7 @@
                 <h2>Procentowa liczba głosów dla poszczególnych kandydatów</h2>
                 <span class="section-icon" data-icon="fas fa-users"></span>
 
-                <figure>
-                    <!--<img src="./img/kd.png" border="0">-->
-                    <div id="votes-per-cand-chart"></div>
-                </figure>
+                <figure id="votes-per-cand-chart"></figure>
 
                 <table class="results-table">
                      <thead>
@@ -124,12 +119,14 @@
 
             </section>
 
-            <br>
-
             <section>
                 <h2>Dane szczegółowe</h2>
                 <span class="section-icon" data-icon="fas fa-info"></span>
 
+                <figure id="votes-invalid-rate-chart"></figure>
+                <figure id="votes-by-region-chart"></figure>
+                
+                
                 <table class="results-table">
                      <thead>
                         <tr>
@@ -162,15 +159,10 @@
                 </table>
             </section>
 
-            <br>
-
             <section>
                 <h2>Frekwencja</h2>
                 <span class="section-icon" data-icon="fas fa-percent"></span>
-                <figure>
-                    <div id="frequency-map-chart"></div>
-                    <!--<div id="subdivision-map-chart" style="width:900px;height:900px;"></div>-->
-                </figure>
+                <figure id="frequency-map-chart"></figure>
 
                 <table class="results-table voting-frequency">
                     <thead>
@@ -201,9 +193,17 @@
                 </table>
             </section>
 
-            <br>
-            <footer></footer>
+            <footer>
+                <p>Piotr Styczyński @2018</p>
+                <p>Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)</p>
+                <p>@styczynski</p>
+                <a href="https://github.com/styczynski/pl-election-2000">
+                    <img src="https://avatars2.githubusercontent.com/u/7319352?s=460&v=4" />
+                </a>
+            </footer>
         </main>
-
+        
+        {% include 'footer.tmpl' %}
+        
     </body>
 </html>

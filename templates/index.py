@@ -28,6 +28,9 @@ class DataGenerator:
         self.cache = None
         self.config = config
 
+    def getJSFileNames(self):
+        return [ 'voting_data' ]
+        
     def aggregateVotingStats(self, dataReader=None, aggregators=[], resolution=None, postParsers=[]):
 
         if dataReader is None:

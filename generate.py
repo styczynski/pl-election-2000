@@ -38,6 +38,8 @@ templateParametersPredefined = {
     'vendor': './vendor'
 }
 
+MODE = config['MODE']
+
 def renderSubtemplate(templateOutputPathForSubfile, template, templateDataGenerator, templateParameters, templateDataFilename, indexNo):
     templateParametersForSubfile = templateParameters
 
@@ -109,6 +111,7 @@ def renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPos
 
 
 def generateTemplates():
+    global MODE
     start_time = datetime.now()
 
     pool = Pool(7)
@@ -150,13 +153,17 @@ def generateTemplates():
 
                   templatesEntrypoints[f'{templatePath}/index.html'] = {
                       'input': templateInputPath,
+                      'inputLocation': f'{templatePath}',
                       'output': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.html',
                       'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}',
                       'outputPostfix': f'.html',
+                      'isGlobal': False,
                       'configPy': templatesEntrypointsConfigPy,
                       'inputJS': templatesEntrypointsJS,
                       'inputCSS': templatesEntrypointsCSS,
                       'outputJS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.js',
+                      'outputJSPrefix': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}_',
+                      'outputJSPostfix': f'.js',
                       'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/{templatePath}.css'
                   }
           bar.next()
@@ -175,7 +182,7 @@ def generateTemplates():
 
           if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.py'):
               print('[i] Prepare global DataGenerator...')
-
+              
               templateConfigModule = importlib.import_module(f'{config["TEMPLATES_PACKAGE"]}.index')
               templateConfigModule = importlib.reload(templateConfigModule)
 
@@ -189,13 +196,17 @@ def generateTemplates():
 
           templatesEntrypoints[f'index.html'] = {
               'input': 'index.html',
+              'inputLocation': f'.',
               'output': f'{config["OUTPUT_DIRECTORY"]}/index.html',
               'outputPrefix': f'{config["OUTPUT_DIRECTORY"]}/index',
               'outputPostfix': f'.html',
               'configPy': None,
+              'isGlobal': True,
               'inputJS': templatesEntrypointsJS,
               'inputCSS': templatesEntrypointsCSS,
               'outputJS': f'{config["OUTPUT_DIRECTORY"]}/index.js',
+              'outputJSPrefix': f'{config["OUTPUT_DIRECTORY"]}/',
+              'outputJSPostfix': f'.js',
               'outputCSS': f'{config["OUTPUT_DIRECTORY"]}/index.css'
           }
 
@@ -207,6 +218,7 @@ def generateTemplates():
       print('[i] Generate templates...')
       for templateID, templateConfig in templatesEntrypoints.items():
           templateInputPath = templateConfig['input']
+          templateInputLocation = templateConfig['inputLocation']
           templateOutputPath = templateConfig['output']
           templateOutputPrefix = templateConfig['outputPrefix']
           templateOutputPostfix = templateConfig['outputPostfix']
@@ -226,12 +238,17 @@ def generateTemplates():
           templateParameters = {**templateData, **templateParametersPredefined}
 
           templateDataGenerator = None
-
+          generatorScoped = None
+          
           if templateConfigModule is not None:
               print(f'        - Load DataGenerator...')
               templateDataGenerator = templateConfigModule.DataGenerator(templateInputPath, config, templateGlobalDataGenerator)
               print(f'        - Loaded DataGenerator')
 
+          generatorScoped = templateDataGenerator
+          if templateConfig['isGlobal']:
+              generatorScoped = templateGlobalDataGenerator
+              
           template = jinjaEnv.get_template(templateInputPath)
 
           if templateDataGenerator is None:
@@ -253,20 +270,57 @@ def generateTemplates():
               renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPostfix,
                                  templateInputPath, templateDataGenerator, templateParameters)
 
-
-          if (templateConfig['inputJS'] is not None) and (templateConfig['outputJS'] is not None):
-              print(f'        - Generate JS')
-              template = jinjaEnv.get_template(templateConfig['inputJS'])
-              print(f'        - Save JS')
-              with open(templateConfig['outputJS'], 'wb') as out:
-                  out.write(
-                      jsmin(template.render(**templateParameters)).encode('utf-8')
-                  )
+                                 
+                                 
+          if ((templateConfig['inputJS'] is not None) and (templateConfig['outputJS'] is not None)) or (hasattr(templateDataGenerator, 'getJSFileNames')):
+              
+              JSfilelist = []
+              
+              
+              if ((templateConfig['inputJS'] is not None) and (templateConfig['outputJS'] is not None)):
+                JSfilelist = [
+                    {
+                        'name': 'default',
+                        'input':  templateConfig['inputJS'],
+                        'output': templateConfig['outputJS']
+                    }
+                ]
+              
+              if hasattr(generatorScoped, 'getJSFileNames'):
+                  print('        - Detected additional JS modules')
+                  JSNames = generatorScoped.getJSFileNames()
+                  for name in JSNames:
+                      JSfilelist.append({
+                          'name': name,
+                          'input': f'{templateInputLocation}/{name}.js',
+                          'output': f'{templateConfig["outputJSPrefix"]}{name}{templateConfig["outputJSPostfix"]}'
+                      })
+              
+              
+              for JSFile in JSfilelist:
+              
+                  outputJS = JSFile["output"]
+                  inputJS = JSFile["input"]
+                  name = JSFile["name"]
+              
+                  print(f'        - Generate JS module: {name}...')
+                  template = jinjaEnv.get_template(inputJS)
+                  print(f'        - Save JS module...')
+                  with open(outputJS, 'wb') as out:
+                      if MODE is 'release':
+                          print(f'        - Minify JS module...')
+                          out.write(
+                              jsmin(template.render(**templateParameters)).encode('utf-8')
+                          )
+                      else:
+                          out.write(
+                              (template.render(**templateParameters)).encode('utf-8')
+                          )
 
           if (templateConfig['inputCSS'] is not None) and (templateConfig['outputCSS'] is not None):
-              print(f'        - Generate CSS')
+              print(f'        - Generate CSS...')
               template = jinjaEnv.get_template(templateConfig['inputCSS'])
-              print(f'        - Save CSS')
+              print(f'        - Save CSS...')
               with open(templateConfig['outputCSS'], 'wb') as out:
                   out.write(
                       template.render(**templateParameters).encode('utf-8')
@@ -315,6 +369,7 @@ def loadCliParameters():
             sys.exit(1)
 
 def runCli():
+    global MODE
     loadCliParameters()
     generateTemplates()
 

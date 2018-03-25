@@ -190,6 +190,9 @@ header h1 {
 
 header h1 p {
     margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 header {
@@ -253,10 +256,9 @@ section > h2 {
 main > nav {
     background: #975259;
     width: 44vw;
-    position: absolute;
-    top: 33vw;
+    margin-top: 17vw;
     height: 6vw;
-    left: 5vw;
+    margin-left: 5vw;
 }
 
 main > nav ul {
@@ -356,6 +358,12 @@ table.content-layout td {
     opacity: 0;
 }
 
+table.results-table * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 table.results-table {
     border-spacing: 0;
     width: 74vw;
@@ -417,7 +425,7 @@ table.results-table tbody tr:hover {
 
 
 main section {
-    margin-top: 19vw;
+    margin-top: 0;
     /* position: absolute; */
     padding: 0;
     width: 80vw;
@@ -451,6 +459,48 @@ aside.active {
 
 aside nav {
     z-index: 1000001;
+    position: relative;
+    max-height: 56vh;
+    overflow-y: scroll;
+    left: 14px;
+}
+
+
+
+@media (max-height: 480px) {
+    aside nav {
+        max-height: 47vh;
+    }
+}
+
+@media (max-height: 390px) {
+    aside nav {
+        max-height: 38vh;
+    }
+}
+
+@media (max-height: 390px) {
+    aside nav {
+        max-height: 38vh;
+    }
+}
+
+@media (max-height: 330px) {
+    aside nav {
+        max-height: 27vh;
+    }
+}
+
+@media (max-height: 280px) {
+    aside nav {
+        max-height: 18vh;
+    }
+}
+
+@media (max-height: 246px) {
+    aside nav {
+        display: none;
+    }
 }
 
 aside nav ul {
@@ -465,6 +515,8 @@ aside nav ul li {
     cursor: pointer;
     border-left: #00000030 0.3vw solid;
     padding-left: 10px;
+    word-wrap: break-word;
+    width: 70%;
     /* background: red; */
 }
 
@@ -503,26 +555,95 @@ footer p {
 }
 
 footer a img {
-    width: 20vw;
-    filter: brightness(10000%);
+    width: 7vw;
+    margin-left: 1vw;
+    border-radius: 50%;
+    filter: grayscale(100%);
 }
 
 footer a {
     background: transparent;
-    width: 20vw;
-    float: right;
+    width: 100%;
+    float: left;
     position: relative;
-    top: -9vw;
-    height: 12vw;
+    top: -14vw;
+    height: 18vw;
     display: block;
 }
 
-footer a:hover {
+footer:hover {
+    background: #975259b8;
+}
+
+footer:hover a {
     background: #afafaf45;
 }
 
-footer a:hover img {
+footer:hover a img {
     filter: unset;
+}
+
+
+figure div.loading-spinner {
+    border-left: 1vw solid #975259;
+    border-top: 1vw transparent solid;
+    border-right: 1vw transparent solid;
+    border-bottom: 1vw transparent solid;
+    width: 10vw;
+    height: 10vw;
+    margin-left: 25%;
+    margin-top: 25%;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        border-left: 1vw solid #975259;
+        border-top: 1vw transparent solid;
+        border-right: 1vw transparent solid;
+        border-bottom: 1vw transparent solid;
+        transform: rotate(0deg);
+    }
+    25% {
+        border-left: 1vw transparent solid;
+        border-top: 1vw solid #975259;
+        border-right: 1vw transparent solid;
+        border-bottom: 1vw transparent solid;
+        transform: rotate(90deg);
+    }
+    50% {
+        border-left: 1vw transparent solid;
+        border-top: 1vw transparent solid;
+        border-right: 1vw solid #975259;
+        border-bottom: 1vw transparent solid;
+        transform: rotate(180deg);
+    }
+    75% {
+        border-left: 1vw transparent solid;
+        border-top: 1vw transparent solid;
+        border-right: 1vw transparent solid;
+        border-bottom: 1vw solid #975259;
+        transform: rotate(270deg);
+    }
+    100% {
+        border-left: 1vw solid #975259;
+        border-top: 1vw transparent solid;
+        border-right: 1vw transparent solid;
+        border-bottom: 1vw transparent solid;
+        transform: rotate(360deg);
+    }
+}
+
+
+#votes-by-region-chart {
+    /* float: left; */
+    width: 34vw;
+}
+
+#votes-invalid-rate-chart {
+    float: right;
+    width: 38vw;
 }
 
 @media (min-width: 1600px) {
@@ -549,7 +670,7 @@ footer a:hover img {
     }
 
     main > nav {
-        left: 18vw;
+        margin-left: 18vw;
     }
 
     main section {
@@ -568,6 +689,15 @@ footer a:hover img {
 
     aside {
         display: none !important;
+    }
+    
+    #votes-by-region-chart {
+      width: 62vw;
+    }
+
+    #votes-invalid-rate-chart {
+        float: none;
+        width: 62vw;
     }
 
 }
@@ -612,7 +742,7 @@ footer a:hover img {
     }
 
     main > nav {
-        left: 3vw;
+        margin-left: 3vw;
     }
 
     main section {
@@ -693,7 +823,7 @@ footer a:hover img {
     }
 
     main section {
-        margin-top: 27vw;
+        margin-top: 0;
     }
 
     main > nav h1 {
@@ -822,12 +952,8 @@ footer a:hover img {
     }
 
     main > nav {
-        top: 61vw;
+        margin-top: 45vw;
         width: 105vw;
-    }
-
-    main > section {
-        margin-top: 55vw;
     }
 
     main > section h2 {
