@@ -11,7 +11,7 @@
                     <figure>
                         <i class="fa fa-compass"></i>
                     </figure>
-                    <span class="wx-wrapper">
+                    <nav class="wx-wrapper">
                         <ul>
                             {% for divisionID, trash in voting.voivodeships[voting.voivodeshipSubpageName].divisions.items() %}
                                 <li data-link-division="{{divisionID}}">
@@ -19,26 +19,24 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                    </span>
+                    </nav>
                 </li>
                 <li>
                     <figure>
                         <i class="fas fa-search"></i>
                     </figure>
                     <input type="text" size="35" placeholder="Znajdź region..."></input>
-                    <span class="wxx-wrapper">
+                    <nav class="wxx-wrapper">
                         <ol></ol>
-                    <span>
+                    </nav>
                 </li>
             </ul>
         </nav>
 
         <header>
-            <h1>
-                <p>Wybory Prezydenta</p>
-                <p>Rzeczypospolitej Polskiej 2000r.</p>
-                <p>{{ voting.voivodeshipSubpageName }}</p>
-            </h1>
+            <h1>Wybory Prezydenta</h1>
+            <h1>Rzeczypospolitej Polskiej 2000r.</h1>
+            <h2>{{ voting.voivodeshipSubpageName }}</h2>
             <figure id="main-map-chart"></figure>
         </header>
 
@@ -60,22 +58,13 @@
                 <ul></ul>
             </nav>
 
-            <ol style="display:none">
-                <li>
-                    <a href="http://www.example.com/">
-                        Polska
-                    </a>
-                </li>
-            </ol>
-
-
             <section>
-                <h2>Procentowa liczba głosów dla poszczególnych kandydatów</h2>
-                <span class="section-icon" data-icon="fas fa-users"></span>
+                <h4>Procentowa liczba głosów dla poszczególnych kandydatów</h4>
+                <i data-icon="fas fa-users"></i>
 
                 <figure id="votes-per-cand-chart"></figure>
 
-                <table class="results-table">
+                <table>
                      <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">Kandydat</th>
@@ -94,7 +83,7 @@
                      </tbody>
                 </table>
 
-                <table class="results-table">
+                <table>
                      <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">Okręg</th>
@@ -120,14 +109,14 @@
             </section>
 
             <section>
-                <h2>Dane szczegółowe</h2>
-                <span class="section-icon" data-icon="fas fa-info"></span>
+                <h4>Dane szczegółowe</h4>
+                <i data-icon="fas fa-info"></i>
 
                 <figure id="votes-invalid-rate-chart"></figure>
                 <figure id="votes-by-region-chart"></figure>
                 
                 
-                <table class="results-table">
+                <table>
                      <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">Statystyka</th>
@@ -160,11 +149,11 @@
             </section>
 
             <section>
-                <h2>Frekwencja</h2>
-                <span class="section-icon" data-icon="fas fa-percent"></span>
+                <h4>Frekwencja</h4>
+                <i data-icon="fas fa-percent"></i>
                 <figure id="frequency-map-chart"></figure>
 
-                <table class="results-table voting-frequency">
+                <table>
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">Okręg</th>
@@ -186,19 +175,12 @@
                 </table>
             </section>
 
-            <section>
-                <h2>Statystyka ogółem</h2>
-                <table width="100%" border="0" cellspacing="2" cellpadding="1" align="center">
-
-                </table>
-            </section>
-
             <footer>
                 <p>Piotr Styczyński @2018</p>
                 <p>Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)</p>
                 <p>@styczynski</p>
                 <a href="https://github.com/styczynski/pl-election-2000">
-                    <img src="https://avatars2.githubusercontent.com/u/7319352?s=460&v=4" />
+                    <img alt="Piotr Styczyński - zdjęcie" src="https://avatars2.githubusercontent.com/u/7319352?s=460&v=4" />
                 </a>
             </footer>
         </main>

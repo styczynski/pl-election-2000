@@ -86,16 +86,16 @@ $(document).ready(function() {
             self.redrawMaps();
             self.__installClickHooks();
 
-            $("main section > .section-icon").each(function(index){
+            $("main section > i").each(function(index){
                var el = $(this);
                var section = el.parent();
                section.addClass("section-"+index);
                var sectionName = section.find("h2").text();
                var clickableIcon = ($("" +
                    "<li>\n" +
-                   "   <h1>\n" +
+                   "   <figure>\n" +
                    "      <i class=\""+el.data("icon")+"\"></i>\n" +
-                   "   </h1>\n" +
+                   "   </figure>\n" +
                    "</li>"
                ));
                clickableIcon.click(function(){
@@ -697,7 +697,7 @@ $(document).ready(function() {
                     self.installLinkAtDOM(this);
                 });
 
-                $('.results-table').each(function() {
+                $('table').each(function() {
                     var table = $(this);
                     table.find('th').each(function(i) {
                         var self = $(this);
