@@ -17,11 +17,11 @@
         </script>
         <script src="./vendor/d3pie.min.js">
         </script>
-        <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript">
+        <script src="https://www.gstatic.com/charts/loader.js">
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY">
         </script>
-        <script src="https://cdn.rawgit.com/rarylson/geochart-geojson/master/build/geochart-geojson.min.js" type="text/javascript">
+        <script src="https://cdn.rawgit.com/rarylson/geochart-geojson/master/build/geochart-geojson.min.js">
         </script>
         <script src="https://rawgit.com/farzher/fuzzysort/master/fuzzysort.js">
         </script>
@@ -120,6 +120,24 @@
             </h3>
             <figure id="main-map-chart">
             </figure>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./index.html">
+                            Polska
+                        </a>
+                    </li>
+                    <li data-link-voivodeship="PODKARPACKIE">
+                        PODKARPACKIE
+                    </li>
+                    <li data-link-division="40">
+                        Okręg 40
+                    </li>
+                    <li data-link-commune="Tarnowiec">
+                        Tarnowiec
+                    </li>
+                </ul>
+            </nav>
         </header>
         <aside>
             <nav>
@@ -499,7 +517,7 @@
                 </a>
             </footer>
         </main>
-        <script type="text/javascript">
+        <script>
             (function() {
                 setTimeout(function() {
                     setLocationHints('PODKARPACKIE', '40', 'Tarnowiec');
