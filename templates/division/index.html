@@ -39,6 +39,21 @@
             <h2>{{ voting.voivodeshipSubpageName }}</h2>
             <h3>Okręg {{ voting.divisionSubpageNo }}</h3>
             <figure id="main-map-chart"></figure>
+            
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./index.html">Polska</a>
+                    </li>
+                    <li data-link-voivodeship="{{voting.voivodeshipSubpageName}}">
+                        {{ voting.voivodeshipSubpageName }}
+                    </li>
+                    <li data-link-division="{{voting.divisionSubpageNo}}">
+                        Okręg {{ voting.divisionSubpageNo }}
+                    </li>
+                </ul>
+            </nav>
+            
         </header>
 
         <aside>
@@ -176,17 +191,11 @@
                 </table>
             </section>
 
-            <footer>
-                <p>Piotr Styczyński @2018</p>
-                <p>Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)</p>
-                <p>@styczynski</p>
-                <a href="https://github.com/styczynski/pl-election-2000">
-                    <img alt="Piotr Styczyński - zdjęcie" src="https://avatars2.githubusercontent.com/u/7319352?s=460&v=4" />
-                </a>
-            </footer>
+            {% include 'footer.tmpl' %}
+            
         </main>
         
-        {% include 'footer.tmpl' %}
+        {% include 'load-script.tmpl' %}
         
     </body>
 </html>

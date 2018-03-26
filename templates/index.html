@@ -37,6 +37,15 @@
             <h1>Wybory Prezydenta</h1>
             <h1>Rzeczypospolitej Polskiej 2000r.</h1>
             <figure id="main-map-chart"></figure>
+            
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./index.html">Polska</a>
+                    </li>
+                </ul>
+            </nav>
+            
         </header>
 
         <aside>
@@ -127,7 +136,7 @@
 
             <section>
                 <h4>Frekwencja</h4>
-                <i data-icon="fas fa-percent"></span>
+                <i data-icon="fas fa-percent"></i>
                 <figure id="frequency-map-chart"></figure>
 
                 <table>
@@ -152,17 +161,11 @@
                 </table>
             </section>
 
-            <footer>
-              <p>Piotr Styczyński @2018</p>
-              <p>Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)</p>
-              <p>@styczynski</p>
-              <a href="https://github.com/styczynski/pl-election-2000">
-                <img alt="Piotr Styczyński - zdjęcie" src="https://avatars2.githubusercontent.com/u/7319352?s=460&v=4" />
-              </a>
-            </footer>
+            {% include 'footer.tmpl' %}
+            
         </main>
 
-        {% include 'footer.tmpl' %}
+        {% include 'load-script.tmpl' %}
         
     </body>
 </html>

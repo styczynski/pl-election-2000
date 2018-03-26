@@ -1,4 +1,3 @@
-
 var PIE_COLORS = [
     "#944a4a",
     "#6e5454",
@@ -18,26 +17,26 @@ let LOCATION_HINTS = null;
 let VOTING_DATA_QUEUE = [];
 
 var notifyVotingData = function() {
-  if(VOTING_DATA && LOCATION_HINTS) {
+    if (VOTING_DATA && LOCATION_HINTS) {
         VOTING_DATA.voivodeshipSubpageName = LOCATION_HINTS.voivodeshipSubpageName;
         VOTING_DATA.divisionSubpageNo = LOCATION_HINTS.divisionSubpageNo;
         VOTING_DATA.communeSubpageName = LOCATION_HINTS.communeSubpageName;
-        VOTING_DATA_QUEUE.forEach(function(fn){
+        VOTING_DATA_QUEUE.forEach(function(fn) {
             fn(VOTING_DATA);
         });
         VOTING_DATA_QUEUE = [];
-  }
+    }
 };
 
 var provideVotingData = function(data) {
-    if(!VOTING_DATA && data) {
+    if (!VOTING_DATA && data) {
         VOTING_DATA = data;
         notifyVotingData();
     }
 };
 
 var requireVotingData = function(fn) {
-    if(VOTING_DATA && LOCATION_HINTS) {
+    if (VOTING_DATA && LOCATION_HINTS) {
         fn(VOTING_DATA);
     } else {
         VOTING_DATA_QUEUE.push(fn);
@@ -46,7 +45,7 @@ var requireVotingData = function(fn) {
 
 var setLocationHints = function(x, y, z) {
     console.log('Set location hints');
-    if(!LOCATION_HINTS) {
+    if (!LOCATION_HINTS) {
         LOCATION_HINTS = {};
         LOCATION_HINTS.voivodeshipSubpageName = x;
         LOCATION_HINTS.divisionSubpageNo = y;
@@ -63,11 +62,11 @@ $(document).ready(function() {
         self.sections = [];
         self.redrawMaps = null;
         self.switchTo = function changeContentView(index) {
-            console.log("! Switch to "+index);
+            console.log("! Switch to " + index);
             self.displayedIndex = index;
             $("main section.active").removeClass('active');
-            $($("main section.section-"+index)).addClass('active');
-            if(self.redrawMaps) {
+            $($("main section.section-" + index)).addClass('active');
+            if (self.redrawMaps) {
                 self.redrawMaps();
             }
         };
@@ -86,38 +85,38 @@ $(document).ready(function() {
             self.redrawMaps();
             self.__installClickHooks();
 
-            $("main section > i").each(function(index){
-               var el = $(this);
-               var section = el.parent();
-               section.addClass("section-"+index);
-               var sectionName = section.find("h2").text();
-               var clickableIcon = ($("" +
-                   "<li>\n" +
-                   "   <figure>\n" +
-                   "      <i class=\""+el.data("icon")+"\"></i>\n" +
-                   "   </figure>\n" +
-                   "</li>"
-               ));
-               clickableIcon.click(function(){
-                   self.switchTo(index);
-               });
-               sectionsNavList.append(clickableIcon);
-               self.sections.push({
-                   name: sectionName,
-                   element: section
-               });
+            $("main section > i").each(function(index) {
+                var el = $(this);
+                var section = el.parent();
+                section.addClass("section-" + index);
+                var sectionName = section.find("h2").text();
+                var clickableIcon = ($("" +
+                    "<li>\n" +
+                    "   <figure>\n" +
+                    "      <i class=\"" + el.data("icon") + "\"></i>\n" +
+                    "   </figure>\n" +
+                    "</li>"
+                ));
+                clickableIcon.click(function() {
+                    self.switchTo(index);
+                });
+                sectionsNavList.append(clickableIcon);
+                self.sections.push({
+                    name: sectionName,
+                    element: section
+                });
             });
             self.switchTo(self.displayedIndex);
         };
         self.__loadMaps = function() {
             google.charts.load('current', {
-                'packages':['geochart', 'corechart'],
+                'packages': ['geochart', 'corechart'],
                 // Note: you will need to get a mapsApiKey for your project.
                 // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
                 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
             });
-            google.charts.setOnLoadCallback(function(){
-                requireVotingData(function(){
+            google.charts.setOnLoadCallback(function() {
+                requireVotingData(function() {
                     self.__createFrequencyMap();
                     self.__createMainNavigationMap();
                     self.__createGeneralStatsChartVotesByRegion();
@@ -125,208 +124,206 @@ $(document).ready(function() {
                 });
             });
         };
-        
-        
-        
+
+
+
         self.__createGeneralStatsChartVotesByRegion = function() {
-            
+
             $('#votes-by-region-chart .loading-spinner').remove();
-            
+
             var votesByRegionCols = [
-                  [
-                      {
-                          'label': 'Region',
-                          'id': 'region',
-                          'type': 'string'
-                      },
-                      {
-                          'label': 'Głosy zebrane z urn',
-                          'id': 'collected-votes',
-                          'type': 'number'
-                      },
-                      {
-                          role: 'style'
-                      }
-                  ]
+                [{
+                        'label': 'Region',
+                        'id': 'region',
+                        'type': 'string'
+                    },
+                    {
+                        'label': 'Głosy zebrane z urn',
+                        'id': 'collected-votes',
+                        'type': 'number'
+                    },
+                    {
+                        role: 'style'
+                    }
+                ]
             ];
-                  
+
             var votesByRegionData = google.visualization.arrayToDataTable(votesByRegionCols);
-            
-            if(!VOTING_DATA.voivodeshipSubpageName) {
 
-              votesByRegionData.addRows(
-                  Object.keys(VOTING_DATA.voivodeships).map(function(voivodeshipName, i) {
-                      const regionData = VOTING_DATA.voivodeships[voivodeshipName];
-                      return [
-                          regionData.name,
-                          regionData.totalVotes,
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
-            } else if(!VOTING_DATA.divisionSubpageNo) {
+            if (!VOTING_DATA.voivodeshipSubpageName) {
 
-              votesByRegionData.addRows(
-                  Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, i){
-                      const regionData = VOTING_DATA.divisions[divisionNo];
-                      return [
-                          'Okręg '+divisionNo,
-                          regionData.totalVotes,
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
+                votesByRegionData.addRows(
+                    Object.keys(VOTING_DATA.voivodeships).map(function(voivodeshipName, i) {
+                        const regionData = VOTING_DATA.voivodeships[voivodeshipName];
+                        return [
+                            regionData.name,
+                            regionData.totalVotes,
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
+
+            } else if (!VOTING_DATA.divisionSubpageNo) {
+
+                votesByRegionData.addRows(
+                    Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, i) {
+                        const regionData = VOTING_DATA.divisions[divisionNo];
+                        return [
+                            'Okręg ' + divisionNo,
+                            regionData.totalVotes,
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
+
             } else {
 
-              votesByRegionData.addRows(
-                  Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, i){
-                      const regionData = VOTING_DATA.communes[communeName];
-                      return [
-                          communeName,
-                          regionData.totalVotes,
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
+                votesByRegionData.addRows(
+                    Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, i) {
+                        const regionData = VOTING_DATA.communes[communeName];
+                        return [
+                            communeName,
+                            regionData.totalVotes,
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
+
             }
 
             var votesByRegionOptions = {
-              'title': 'Głosy zebrane\nwg. regionów',
-              'titleTextStyle': {
-                fontName: "'PT Sans', sans-serif",
-                bold: true,
-                //fontSize: 24,
-                color: '#575755'
-              },
-              'width': '100%',
-              'height': '100%',
-              'colors': PIE_COLORS,
-              'legend': {
-                position: "none"
-              },
-              'backgroundColor': 'transparent'
+                'title': 'Głosy zebrane\nwg. regionów',
+                'titleTextStyle': {
+                    fontName: "'PT Sans', sans-serif",
+                    bold: true,
+                    //fontSize: 24,
+                    color: '#575755'
+                },
+                'width': '100%',
+                'height': '100%',
+                'colors': PIE_COLORS,
+                'legend': {
+                    position: "none"
+                },
+                'backgroundColor': 'transparent'
             };
 
             var votesByRegionChart = new google.visualization.PieChart(document.getElementById('votes-by-region-chart'));
             votesByRegionChart.draw(votesByRegionData, votesByRegionOptions);
-            
+
         };
-        
+
         self.__createGeneralStatsChartVotesInvalidRate = function() {
-            
+
             $('#votes-invalid-rate-chart .loading-spinner').remove();
-            
+
             // Create the data table.
             var votesInvalidRateData = new google.visualization.DataTable();
             votesInvalidRateData.addColumn('string', 'Region');
             votesInvalidRateData.addColumn('number', 'Procent głosów\nnieważnych');
-            
+
             var votesInvalidRateCols = [
-                  [
-                      {
-                          'label': 'Region',
-                          'id': 'region',
-                          'type': 'string'
-                      },
-                      {
-                          'label': 'Procent głosów nieważnych',
-                          'id': 'invalid-votes-rate',
-                          'type': 'number'
-                      },
-                      {
-                          role: 'style'
-                      }
-                  ]
+                [{
+                        'label': 'Region',
+                        'id': 'region',
+                        'type': 'string'
+                    },
+                    {
+                        'label': 'Procent głosów nieważnych',
+                        'id': 'invalid-votes-rate',
+                        'type': 'number'
+                    },
+                    {
+                        role: 'style'
+                    }
+                ]
             ];
-            
+
             var votesInvalidRateData = google.visualization.arrayToDataTable(votesInvalidRateCols);
 
-            if(!VOTING_DATA.voivodeshipSubpageName) {
+            if (!VOTING_DATA.voivodeshipSubpageName) {
 
-              votesInvalidRateData.addRows(
-                  Object.keys(VOTING_DATA.voivodeships).map(function(voivodeshipName, i) {
-                      const regionData = VOTING_DATA.voivodeships[voivodeshipName];
-                      return [
-                          regionData.name,
-                          (regionData.votesInvalid / regionData.totalVotes),
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
-            } else if(!VOTING_DATA.divisionSubpageNo) {
+                votesInvalidRateData.addRows(
+                    Object.keys(VOTING_DATA.voivodeships).map(function(voivodeshipName, i) {
+                        const regionData = VOTING_DATA.voivodeships[voivodeshipName];
+                        return [
+                            regionData.name,
+                            (regionData.votesInvalid / regionData.totalVotes),
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
 
-              votesInvalidRateData.addRows(
-                  Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, i){
-                      const regionData = VOTING_DATA.divisions[divisionNo];
-                      return [
-                          'Okręg '+divisionNo,
-                          (regionData.votesInvalid / regionData.totalVotes),
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
+            } else if (!VOTING_DATA.divisionSubpageNo) {
+
+                votesInvalidRateData.addRows(
+                    Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, i) {
+                        const regionData = VOTING_DATA.divisions[divisionNo];
+                        return [
+                            'Okręg ' + divisionNo,
+                            (regionData.votesInvalid / regionData.totalVotes),
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
+
             } else {
 
-              votesInvalidRateData.addRows(
-                  Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, i){
-                      const regionData = VOTING_DATA.communes[communeName];
-                      return [
-                          communeName,
-                          (regionData.votesInvalid / regionData.totalVotes),
-                          'color: '+PIE_COLORS[i%2]
-                      ];
-                  })
-              );
-              
+                votesInvalidRateData.addRows(
+                    Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, i) {
+                        const regionData = VOTING_DATA.communes[communeName];
+                        return [
+                            communeName,
+                            (regionData.votesInvalid / regionData.totalVotes),
+                            'color: ' + PIE_COLORS[i % 2]
+                        ];
+                    })
+                );
+
             }
 
             var votesInvalidRateOptions = {
-              'title': 'Procent głosów niewaznych',
-              'titleTextStyle': {
-                fontName: "'PT Sans', sans-serif",
-                bold: true,
-                //fontSize: 24,
-                color: '#575755'
-              },
-              'width': '100%',
-              'height': '100%',
-              'legend': {
-                position: "none"
-              },
-              'hAxis': {
-                format: "percent"
-              },
-              'backgroundColor': 'transparent'
+                'title': 'Procent głosów niewaznych',
+                'titleTextStyle': {
+                    fontName: "'PT Sans', sans-serif",
+                    bold: true,
+                    //fontSize: 24,
+                    color: '#575755'
+                },
+                'width': '100%',
+                'height': '100%',
+                'legend': {
+                    position: "none"
+                },
+                'hAxis': {
+                    format: "percent"
+                },
+                'backgroundColor': 'transparent'
             };
 
             var votesInvalidRateChart = new google.visualization.BarChart(document.getElementById('votes-invalid-rate-chart'));
             votesInvalidRateChart.draw(votesInvalidRateData, votesInvalidRateOptions);
-            
+
         };
 
         self.__createMainNavigationMap = function() {
 
-              dataToNavigate = [
-                  ['Region', 'None']
-              ];
+            dataToNavigate = [
+                ['Region', 'None']
+            ];
 
-              if(VOTING_DATA.voivodeshipSubpageName) {
-                  var voivodeshipCode = VOTING_DATA.voivodeshipCodes[VOTING_DATA.voivodeshipSubpageName];
-                  if(voivodeshipCode) {
-                      dataToNavigate.push([
-                            voivodeshipCode, 100
-                      ]);
-                  }
-              }
+            if (VOTING_DATA.voivodeshipSubpageName) {
+                var voivodeshipCode = VOTING_DATA.voivodeshipCodes[VOTING_DATA.voivodeshipSubpageName];
+                if (voivodeshipCode) {
+                    dataToNavigate.push([
+                        voivodeshipCode, 100
+                    ]);
+                }
+            }
 
-              var data = google.visualization.arrayToDataTable(dataToNavigate);
+            var data = google.visualization.arrayToDataTable(dataToNavigate);
 
-              var options = {
+            var options = {
                 region: 'PL',
                 resolution: 'provinces',
                 backgroundColor: 'transparent',
@@ -340,98 +337,97 @@ $(document).ready(function() {
                 colorAxis: {
                     colors: ['#cecccc', '#754a4a']
                 }
-              };
+            };
 
-              var chart = null;
+            var chart = null;
 
-              function clickRegion(eventData) {
+            function clickRegion(eventData) {
 
-                    console.log(eventData.region);
+                console.log(eventData.region);
 
-                    var voivodeshipFullName = Object.keys(VOTING_DATA.voivodeshipCodes).filter(function(key){
-                        return VOTING_DATA.voivodeshipCodes[key] == eventData.region;
-                    })[0];
+                var voivodeshipFullName = Object.keys(VOTING_DATA.voivodeshipCodes).filter(function(key) {
+                    return VOTING_DATA.voivodeshipCodes[key] == eventData.region;
+                })[0];
 
-                    if(voivodeshipFullName) {
-                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
-                    };
-              };
+                if (voivodeshipFullName) {
+                    window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName + '.html';
+                };
+            };
 
-              function chartReady() {
-                  // Hack to mark the desired region without changing opacity
-                  $('#main-map-chart path:not([fill="#f5f5f5"])').first().attr('style', 'fill: #cecccc !important;');
-              };
+            function chartReady() {
+                // Hack to mark the desired region without changing opacity
+                $('#main-map-chart path:not([fill="#f5f5f5"])').first().attr('style', 'fill: #cecccc !important;');
+            };
 
-              function pageScrolled() {
-                  const distanceY = window.pageYOffset || document.documentElement.scrollTop,
-                  shrinkOn = 200,
-                  mapElement = $('#main-map-chart')
-                  asideElement = $('aside')
+            function pageScrolled() {
+                const distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                    shrinkOn = 200,
+                    mapElement = $('#main-map-chart')
+                asideElement = $('aside')
 
-                  if (distanceY > shrinkOn) {
+                if (distanceY > shrinkOn) {
                     mapElement.addClass('minimized');
                     asideElement.addClass('active');
-                  } else {
-                      mapElement.removeClass('minimized');
-                      asideElement.removeClass('active');
-                  }
-              }
+                } else {
+                    mapElement.removeClass('minimized');
+                    asideElement.removeClass('active');
+                }
+            }
 
-              chart = new google.visualization.GeoChart(document.getElementById('main-map-chart'));
+            chart = new google.visualization.GeoChart(document.getElementById('main-map-chart'));
 
-              google.visualization.events.addListener(chart, 'regionClick', clickRegion);
-              google.visualization.events.addListener(chart, 'ready', chartReady);
-
-
-              window.addEventListener('scroll', pageScrolled);
+            google.visualization.events.addListener(chart, 'regionClick', clickRegion);
+            google.visualization.events.addListener(chart, 'ready', chartReady);
 
 
-              chart.draw(data, options);
+            window.addEventListener('scroll', pageScrolled);
+
+
+            chart.draw(data, options);
 
         };
 
         self.__createFrequencyMap = function() {
 
-              $('#frequency-map-chart .loading-spinner').remove();
-        
-              if(!VOTING_DATA.voivodeshipSubpageName) {
-                  var frequencyData = [
-                        [
-                            {
-                                'label': 'Region',
-                                'id': 'region',
-                                'type': 'string'
-                            },
-                            {
-                                'label': 'Frekwencja (%)',
-                                'id': 'frequency',
-                                'type': 'number'
-                            },
-                            {
-                                'role': 'tooltip',
-                                'type': 'string',
-                                'p': {
-                                    'html': true
-                                }
+            $('#frequency-map-chart .loading-spinner').remove();
+
+            if (!VOTING_DATA.voivodeshipSubpageName) {
+                var frequencyData = [
+                    [{
+                            'label': 'Region',
+                            'id': 'region',
+                            'type': 'string'
+                        },
+                        {
+                            'label': 'Frekwencja (%)',
+                            'id': 'frequency',
+                            'type': 'number'
+                        },
+                        {
+                            'role': 'tooltip',
+                            'type': 'string',
+                            'p': {
+                                'html': true
                             }
-                        ]
-                  ];
+                        }
+                    ]
+                ];
 
-                  frequencyData = frequencyData.concat(Object.values(VOTING_DATA.voivodeships).map(function(voivodeship){
-                      return [
-                            voivodeship.voivodeshipCode,
-                            voivodeship.frequencyPerc,
-                            "<b>"+voivodeship.name+"</b>" +
-                            "<p><b>Frekwencja: </b>&nbsp;"+voivodeship.frequencyPercStr+"</p>" +
-                            "<p></p>" +
-                            "<p><b>Uprawnionych: </b>&nbsp;"+voivodeship.allowedStr+"</p>" +
-                            "<p><b>Wydanych kart: </b>&nbsp;"+voivodeship.cardsReleasedStr+"</p>"
-                      ];
-                  }));
+                frequencyData = frequencyData.concat(Object.values(VOTING_DATA.voivodeships).map(function(voivodeship) {
+                    return [
+                        voivodeship.voivodeshipCode,
+                        voivodeship.frequencyPerc,
+                        "<b>" + voivodeship.name + "</b>" +
+                        "<p><b>Frekwencja: </b>&nbsp;" + voivodeship.frequencyPercStr + "</p>" +
+                        "<p></p>" +
+                        "<p><b>Uprawnionych: </b>&nbsp;" + voivodeship.allowedStr + "</p>" +
+                        "<p><b>Wydanych kart: </b>&nbsp;" + voivodeship.cardsReleasedStr + "</p>"
+                    ];
+                }));
 
-                  var data = google.visualization.arrayToDataTable(frequencyData);
+                var data = google.visualization.arrayToDataTable(frequencyData);
 
-                  var options = {
+                var options = {
                     region: 'PL',
                     resolution: 'provinces',
                     backgroundColor: 'transparent',
@@ -443,76 +439,84 @@ $(document).ready(function() {
                     colorAxis: {
                         colors: ['#cecccc', '#754a4a']
                     }
-                  };
+                };
 
-                  var chart = new google.visualization.GeoChart(document.getElementById('frequency-map-chart'));
+                var chart = new google.visualization.GeoChart(document.getElementById('frequency-map-chart'));
 
-                  function clickRegion(eventData) {
-                        var voivodeshipFullName = Object.values(VOTING_DATA.voivodeships).filter(function(voivodeship){
-                            return voivodeship.voivodeshipCode == eventData.region;
-                        })[0];
+                function clickRegion(eventData) {
+                    var voivodeshipFullName = Object.values(VOTING_DATA.voivodeships).filter(function(voivodeship) {
+                        return voivodeship.voivodeshipCode == eventData.region;
+                    })[0];
 
-                        if(voivodeshipFullName) {
-                            window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName.name + '.html';
-                        };
-                  };
-                  google.visualization.events.addListener(chart, 'regionClick', clickRegion);
+                    if (voivodeshipFullName) {
+                        window.location = VOTING_DATA.voivodeshipSubpageUrl + voivodeshipFullName.name + '.html';
+                    };
+                };
+                google.visualization.events.addListener(chart, 'regionClick', clickRegion);
 
-                  chart.draw(data, options);
-              } else if(!VOTING_DATA.divisionSubpageNo) {
+                chart.draw(data, options);
+            } else if (!VOTING_DATA.divisionSubpageNo) {
 
-                  var chartData = [
-                    ['Okręg', 'Frekwencja', { role: 'style' }]
-                  ];
+                var chartData = [
+                    ['Okręg', 'Frekwencja', {
+                        role: 'style'
+                    }]
+                ];
 
-                  chartData = chartData.concat(Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, index){
-                      return [
-                          'Okręg '+divisionNo,
-                          VOTING_DATA.divisions[divisionNo].frequencyPerc,
-                          PIE_COLORS[index % 2]
-                      ]
-                  }));
+                chartData = chartData.concat(Object.keys(VOTING_DATA.voivodeships[VOTING_DATA.voivodeshipSubpageName].divisions).map(function(divisionNo, index) {
+                    return [
+                        'Okręg ' + divisionNo,
+                        VOTING_DATA.divisions[divisionNo].frequencyPerc,
+                        PIE_COLORS[index % 2]
+                    ]
+                }));
 
-                  var data = google.visualization.arrayToDataTable(chartData);
+                var data = google.visualization.arrayToDataTable(chartData);
 
-                  var view = new google.visualization.DataView(data);
-                  //view.setColumns([0, 1]);
+                var view = new google.visualization.DataView(data);
+                //view.setColumns([0, 1]);
 
-                  var options = {
+                var options = {
                     title: 'Frekwencja',
-                    width: 600,
-                    height: 400,
+                    width: '100%',
+                    height: '100%',
                     backgroundColor: 'transparent',
-                    bar: {groupWidth: '95%'},
+                    bar: {
+                        groupWidth: '95%'
+                    },
                     legend: {
                         position: 'none'
                     }
-                  };
-                  var chart = new google.visualization.BarChart(document.getElementById('frequency-map-chart'));
-                  chart.draw(view, options);
-              } else if(!VOTING_DATA.communeSubpageName) {
-                  var chartData = [
-                    ['Gmina', 'Frekwencja', { role: 'style' }]
-                  ];
+                };
+                var chart = new google.visualization.BarChart(document.getElementById('frequency-map-chart'));
+                chart.draw(view, options);
+            } else if (!VOTING_DATA.communeSubpageName) {
+                var chartData = [
+                    ['Gmina', 'Frekwencja', {
+                        role: 'style'
+                    }]
+                ];
 
-                  chartData = chartData.concat(Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, index){
-                      return [
-                          communeName,
-                          VOTING_DATA.communes[communeName].frequencyPerc,
-                          PIE_COLORS[index % 2]
-                      ]
-                  }));
+                chartData = chartData.concat(Object.keys(VOTING_DATA.divisions[VOTING_DATA.divisionSubpageNo].communes).map(function(communeName, index) {
+                    return [
+                        communeName,
+                        VOTING_DATA.communes[communeName].frequencyPerc,
+                        PIE_COLORS[index % 2]
+                    ]
+                }));
 
-                  var data = google.visualization.arrayToDataTable(chartData);
+                var data = google.visualization.arrayToDataTable(chartData);
 
-                  var view = new google.visualization.DataView(data);
-                  //view.setColumns([0, 1]);
+                var view = new google.visualization.DataView(data);
+                //view.setColumns([0, 1]);
 
-                  var options = {
-                    width: 830,
-                    height: 500,
+                var options = {
+                    width: '100%',
+                    height: '100%',
                     backgroundColor: 'transparent',
-                    bar: {groupWidth: '95%'},
+                    bar: {
+                        groupWidth: '95%'
+                    },
                     legend: {
                         position: 'none'
                     },
@@ -523,16 +527,16 @@ $(document).ready(function() {
                         slantedText: true,
                         slantedTextAngle: 90
                     }
-                  };
-                  var chart = new google.visualization.ColumnChart(document.getElementById('frequency-map-chart'));
-                  chart.draw(view, options);
-              }
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById('frequency-map-chart'));
+                chart.draw(view, options);
+            }
 
         };
 
 
         self.installLinkAtDOM = function(el) {
-            requireVotingData(function(){
+            requireVotingData(function() {
                 var self = $(el);
                 self.click(function() {
                     var voivodeshipFullName = self.data('link-voivodeship');
@@ -554,31 +558,31 @@ $(document).ready(function() {
 
         self.__installClickHooks = function() {
 
-            requireVotingData(function(){
+            requireVotingData(function() {
                 var maputils = self;
 
                 var toSearch = [];
-                Object.keys(VOTING_DATA.search.voivodeships).forEach(function(voivodeshipName){
+                Object.keys(VOTING_DATA.search.voivodeships).forEach(function(voivodeshipName) {
                     toSearch.push({
-                        textData: 'Województwo '+voivodeshipName,
+                        textData: 'Województwo ' + voivodeshipName,
                         label: voivodeshipName,
                         itemType: 'voivodeship',
                         name: voivodeshipName
                     });
                 });
 
-                Object.keys(VOTING_DATA.search.divisions).forEach(function(divisionNo){
+                Object.keys(VOTING_DATA.search.divisions).forEach(function(divisionNo) {
                     toSearch.push({
-                        textData: 'Okręg '+divisionNo,
-                        label: 'Okręg '+divisionNo,
+                        textData: 'Okręg ' + divisionNo,
+                        label: 'Okręg ' + divisionNo,
                         itemType: 'division',
                         name: divisionNo
                     });
                 });
 
-                Object.keys(VOTING_DATA.search.communes).forEach(function(communeName){
+                Object.keys(VOTING_DATA.search.communes).forEach(function(communeName) {
                     toSearch.push({
-                        textData: 'Gmina '+communeName,
+                        textData: 'Gmina ' + communeName,
                         label: communeName,
                         itemType: 'commune',
                         name: communeName
@@ -587,16 +591,16 @@ $(document).ready(function() {
                 window.VOTE_DATA_SEARCH = toSearch;
 
 
-                $('body > nav ul li input').each(function(){
+                $('body > nav ul li input').each(function() {
                     var self = $(this);
                     var resultsList = self.parent().find('ol');
                     var updatesRequested = 0;
 
-                    var changeHandler = (function(){
+                    var changeHandler = (function() {
                         var content = self.val();
                         var results = [];
 
-                        if(updatesRequested >= 2) {
+                        if (updatesRequested >= 2) {
                             return;
                         } else {
                             ++updatesRequested;
@@ -604,16 +608,18 @@ $(document).ready(function() {
 
                         console.log('request fuzzy search');
 
-                        results = fuzzysort.go(content, toSearch, {key: 'textData'}).slice(0, 15).map(function(result) {
+                        results = fuzzysort.go(content, toSearch, {
+                            key: 'textData'
+                        }).slice(0, 15).map(function(result) {
 
                             var resultNode = $('<li></li>');
                             resultNode.text(result.obj.label);
 
-                            if(result.obj.itemType == 'voivodeship') {
+                            if (result.obj.itemType == 'voivodeship') {
                                 resultNode.data('link-voivodeship', result.obj.name);
-                            } else if(result.obj.itemType == 'division') {
+                            } else if (result.obj.itemType == 'division') {
                                 resultNode.data('link-division', result.obj.name);
-                            } else if(result.obj.itemType == 'commune') {
+                            } else if (result.obj.itemType == 'commune') {
                                 resultNode.data('link-commune', result.obj.name);
                             }
 
@@ -633,7 +639,7 @@ $(document).ready(function() {
                     self.on('input propertychange', changeHandler);
                 });
 
-                $('body > nav ul li').each(function(){
+                $('body > nav ul li').each(function() {
                     var self = $(this);
                     var nestedList = self.find('ul');
                     var nestedInput = self.find('input');
@@ -645,47 +651,47 @@ $(document).ready(function() {
                     var isNestedResultListHovered = false;
 
                     function updateHoverClasses() {
-                      if(isSelfHovered || isNestedListHovered || isNestedInputHovered || isNestedResultListHovered) {
-                          self.addClass('active');
-                          nestedList.addClass('active');
-                          nestedInput.addClass('active');
-                          nestedResultList.addClass('active');
-                      } else {
-                          self.removeClass('active');
-                          nestedList.removeClass('active');
-                          nestedInput.removeClass('active');
-                          nestedResultList.removeClass('active');
-                      }
+                        if (isSelfHovered || isNestedListHovered || isNestedInputHovered || isNestedResultListHovered) {
+                            self.addClass('active');
+                            nestedList.addClass('active');
+                            nestedInput.addClass('active');
+                            nestedResultList.addClass('active');
+                        } else {
+                            self.removeClass('active');
+                            nestedList.removeClass('active');
+                            nestedInput.removeClass('active');
+                            nestedResultList.removeClass('active');
+                        }
                     };
 
-                    nestedResultList.hover(function(){
+                    nestedResultList.hover(function() {
                         isNestedResultListHovered = true;
                         updateHoverClasses();
-                    }, function(){
+                    }, function() {
                         isNestedResultListHovered = false;
                         updateHoverClasses();
                     });
 
-                    nestedInput.hover(function(){
+                    nestedInput.hover(function() {
                         isNestedInputHovered = true;
                         updateHoverClasses();
-                    }, function(){
+                    }, function() {
                         isNestedInputHovered = false;
                         updateHoverClasses();
                     });
 
-                    nestedList.hover(function(){
+                    nestedList.hover(function() {
                         isNestedListHovered = true;
                         updateHoverClasses();
-                    }, function(){
+                    }, function() {
                         isNestedListHovered = false;
                         updateHoverClasses();
                     });
 
-                    self.hover(function(){
+                    self.hover(function() {
                         isSelfHovered = true;
                         updateHoverClasses();
-                    }, function(){
+                    }, function() {
                         isSelfHovered = false;
                         updateHoverClasses();
                     });
@@ -693,7 +699,7 @@ $(document).ready(function() {
                     updateHoverClasses();
                 })
 
-                $('[data-link-voivodeship],[data-link-division],[data-link-commune]').each(function(){
+                $('[data-link-voivodeship],[data-link-division],[data-link-commune]').each(function() {
                     self.installLinkAtDOM(this);
                 });
 
@@ -705,7 +711,7 @@ $(document).ready(function() {
                         var sortingType = self.data('type') || 'string';
                         var sortingMode = self.data('mode') || 'toggle';
 
-                        var castToType = function (type, value) {
+                        var castToType = function(type, value) {
                             if (type == 'string') {
                                 return value.toString();
                             } else if (type == 'integer') {
@@ -718,10 +724,10 @@ $(document).ready(function() {
                             return value;
                         };
 
-                        (function (thIndex, type, mode) {
-                            self.click(function () {
+                        (function(thIndex, type, mode) {
+                            self.click(function() {
                                 var currentMode = self.data('current-mode');
-                                var sortedRows = tableBody.find('tr').sort(function (rowA, rowB) {
+                                var sortedRows = tableBody.find('tr').sort(function(rowA, rowB) {
                                     var colA = $($(rowA).children()[thIndex]).text();
                                     console.log("textA = " + colA);
                                     var colB = $($(rowB).children()[thIndex]).text();
@@ -773,15 +779,15 @@ $(document).ready(function() {
 
         self.__createCandidatesChart = function() {
 
-            requireVotingData(function(){
-          
+            requireVotingData(function() {
+
                 $('#votes-per-cand-chart .loading-spinner').remove();
-          
+
                 $("#votes-per-cand-chart").children().remove();
 
                 var pieVotesConfigArray = [];
 
-                Object.values(self.getSubpageRegionResolutionData().candidates).forEach(function(el, index){
+                Object.values(self.getSubpageRegionResolutionData().candidates).forEach(function(el, index) {
                     pieVotesConfigArray.push({
                         label: el.name,
                         value: el.votes,
@@ -863,7 +869,7 @@ $(document).ready(function() {
                     .attr('width', '100%')
                     .attr('height', '100%')
                     .attr('viewBox', '0 0 850 450');
-                  
+
             });
 
         };
