@@ -3,8 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
-        <link href="https://fonts.googleapis.com/css?family=PT+Sans|Raleway:800" rel="stylesheet"/>
         <link href="./index.css" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css"/>
+        <title>
+   Wybory Prezydenckie 2000
+        </title>
         <script crossorigin="anonymous" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" src="https://code.jquery.com/jquery-3.3.1.slim.min.js">
         </script>
         <script defer="" src="https://use.fontawesome.com/releases/v5.0.8/js/all.js">
@@ -35,7 +39,7 @@
                         <i class="fa fa-compass">
                         </i>
                     </figure>
-                    <span class="wx-wrapper">
+                    <nav class="wx-wrapper">
                         <ul>
                             <li data-link-voivodeship="DOLNOŚLĄSKIE">
                                 DOLNOŚLĄSKIE
@@ -86,7 +90,7 @@
                                 ZACHODNIOPOMORSKIE
                             </li>
                         </ul>
-                    </span>
+                    </nav>
                 </li>
                 <li>
                     <figure>
@@ -94,23 +98,21 @@
                         </i>
                     </figure>
                     <input placeholder="Znajdź region..." size="35" type="text"/>
-                    <span class="wxx-wrapper">
+                    <nav class="wxx-wrapper">
                         <ol>
                         </ol>
-                        <span>
-                        </span>
-                    </span>
+                        <nav>
+                        </nav>
+                    </nav>
                 </li>
             </ul>
         </nav>
         <header>
             <h1>
-                <p>
-                    Wybory Prezydenta
-                </p>
-                <p>
-                    Rzeczypospolitej Polskiej 2000r.
-                </p>
+                Wybory Prezydenta
+            </h1>
+            <h1>
+                Rzeczypospolitej Polskiej 2000r.
             </h1>
             <figure id="main-map-chart">
             </figure>
@@ -174,24 +176,17 @@
                 <ul>
                 </ul>
             </nav>
-            <ol style="display:none">
-                <li>
-                    <a href="http://www.example.com/">
-                        Polska
-                    </a>
-                </li>
-            </ol>
             <section>
-                <h2>
+                <h4>
                     Procentowa liczba głosów dla poszczególnych kandydatów
-                </h2>
-                <span class="section-icon" data-icon="fas fa-users">
-                </span>
+                </h4>
+                <i data-icon="fas fa-users">
+                </i>
                 <figure id="votes-per-cand-chart">
                     <div class="loading-spinner">
                     </div>
                 </figure>
-                <table class="results-table">
+                <table>
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">
@@ -342,16 +337,16 @@
                 </table>
             </section>
             <section>
-                <h2>
+                <h4>
                     Dane szczegółowe
-                </h2>
-                <span class="section-icon" data-icon="fas fa-info">
-                </span>
+                </h4>
+                <i data-icon="fas fa-info">
+                </i>
                 <figure id="votes-invalid-rate-chart">
                 </figure>
                 <figure id="votes-by-region-chart">
                 </figure>
-                <table class="results-table">
+                <table>
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">
@@ -407,284 +402,285 @@
                 </table>
             </section>
             <section>
-                <h2>
+                <h4>
                     Frekwencja
-                </h2>
-                <span class="section-icon" data-icon="fas fa-percent">
-                </span>
-                <figure id="frequency-map-chart">
-                </figure>
-                <table class="results-table voting-frequency">
-                    <thead>
-                        <tr>
-                            <th data-mode="toggle" data-type="string">
-                                Województwo
-                            </th>
-                            <th data-mode="toggle" data-type="integer">
-                                Uprawnionych
-                            </th>
-                            <th data-mode="toggle" data-type="integer">
-                                Wydane karty
-                            </th>
-                            <th data-mode="toggle" data-type="percentage">
-                                Frekwencja (%)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-link-voivodeship="DOLNOŚLĄSKIE">
-                            <td>
-                                DOLNOŚLĄSKIE
-                            </td>
-                            <td>
-                                2,258,296
-                            </td>
-                            <td>
-                                1,368,506
-                            </td>
-                            <td>
-                                60.60%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="KUJAWSKO-POMORSKIE">
-                            <td>
-                                KUJAWSKO-POMORSKIE
-                            </td>
-                            <td>
-                                1,567,120
-                            </td>
-                            <td>
-                                972,854
-                            </td>
-                            <td>
-                                62.08%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="LUBELSKIE">
-                            <td>
-                                LUBELSKIE
-                            </td>
-                            <td>
-                                1,682,020
-                            </td>
-                            <td>
-                                993,066
-                            </td>
-                            <td>
-                                59.04%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="LUBUSKIE">
-                            <td>
-                                LUBUSKIE
-                            </td>
-                            <td>
-                                759,429
-                            </td>
-                            <td>
-                                463,370
-                            </td>
-                            <td>
-                                61.02%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="ŁÓDZKIE">
-                            <td>
-                                ŁÓDZKIE
-                            </td>
-                            <td>
-                                2,052,376
-                            </td>
-                            <td>
-                                1,261,206
-                            </td>
-                            <td>
-                                61.45%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="MAŁOPOLSKIE">
-                            <td>
-                                MAŁOPOLSKIE
-                            </td>
-                            <td>
-                                2,395,210
-                            </td>
-                            <td>
-                                1,490,259
-                            </td>
-                            <td>
-                                62.22%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="MAZOWIECKIE">
-                            <td>
-                                MAZOWIECKIE
-                            </td>
-                            <td>
-                                3,948,464
-                            </td>
-                            <td>
-                                2,424,773
-                            </td>
-                            <td>
-                                61.41%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="OPOLSKIE">
-                            <td>
-                                OPOLSKIE
-                            </td>
-                            <td>
-                                812,320
-                            </td>
-                            <td>
-                                416,534
-                            </td>
-                            <td>
-                                51.28%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="PODKARPACKIE">
-                            <td>
-                                PODKARPACKIE
-                            </td>
-                            <td>
-                                1,552,767
-                            </td>
-                            <td>
-                                955,463
-                            </td>
-                            <td>
-                                61.53%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="PODLASKIE">
-                            <td>
-                                PODLASKIE
-                            </td>
-                            <td>
-                                909,628
-                            </td>
-                            <td>
-                                531,998
-                            </td>
-                            <td>
-                                58.49%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="POMORSKIE">
-                            <td>
-                                POMORSKIE
-                            </td>
-                            <td>
-                                1,618,898
-                            </td>
-                            <td>
-                                1,017,126
-                            </td>
-                            <td>
-                                62.83%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="ŚLĄSKIE">
-                            <td>
-                                ŚLĄSKIE
-                            </td>
-                            <td>
-                                3,695,358
-                            </td>
-                            <td>
-                                2,248,237
-                            </td>
-                            <td>
-                                60.84%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="ŚWIĘTOKRZYSKIE">
-                            <td>
-                                ŚWIĘTOKRZYSKIE
-                            </td>
-                            <td>
-                                1,009,207
-                            </td>
-                            <td>
-                                593,871
-                            </td>
-                            <td>
-                                58.85%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="WARMIŃSKO-MAZURSKIE">
-                            <td>
-                                WARMIŃSKO-MAZURSKIE
-                            </td>
-                            <td>
-                                1,073,754
-                            </td>
-                            <td>
-                                624,126
-                            </td>
-                            <td>
-                                58.13%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="WIELKOPOLSKIE">
-                            <td>
-                                WIELKOPOLSKIE
-                            </td>
-                            <td>
-                                2,493,157
-                            </td>
-                            <td>
-                                1,658,968
-                            </td>
-                            <td>
-                                66.54%
-                            </td>
-                        </tr>
-                        <tr data-link-voivodeship="ZACHODNIOPOMORSKIE">
-                            <td>
-                                ZACHODNIOPOMORSKIE
-                            </td>
-                            <td>
-                                1,294,300
-                            </td>
-                            <td>
-                                778,434
-                            </td>
-                            <td>
-                                60.14%
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                </h4>
+                <i data-icon="fas fa-percent">
+                    <figure id="frequency-map-chart">
+                    </figure>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-mode="toggle" data-type="string">
+                                    Województwo
+                                </th>
+                                <th data-mode="toggle" data-type="integer">
+                                    Uprawnionych
+                                </th>
+                                <th data-mode="toggle" data-type="integer">
+                                    Wydane karty
+                                </th>
+                                <th data-mode="toggle" data-type="percentage">
+                                    Frekwencja (%)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-link-voivodeship="DOLNOŚLĄSKIE">
+                                <td>
+                                    DOLNOŚLĄSKIE
+                                </td>
+                                <td>
+                                    2,258,296
+                                </td>
+                                <td>
+                                    1,368,506
+                                </td>
+                                <td>
+                                    60.60%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="KUJAWSKO-POMORSKIE">
+                                <td>
+                                    KUJAWSKO-POMORSKIE
+                                </td>
+                                <td>
+                                    1,567,120
+                                </td>
+                                <td>
+                                    972,854
+                                </td>
+                                <td>
+                                    62.08%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="LUBELSKIE">
+                                <td>
+                                    LUBELSKIE
+                                </td>
+                                <td>
+                                    1,682,020
+                                </td>
+                                <td>
+                                    993,066
+                                </td>
+                                <td>
+                                    59.04%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="LUBUSKIE">
+                                <td>
+                                    LUBUSKIE
+                                </td>
+                                <td>
+                                    759,429
+                                </td>
+                                <td>
+                                    463,370
+                                </td>
+                                <td>
+                                    61.02%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="ŁÓDZKIE">
+                                <td>
+                                    ŁÓDZKIE
+                                </td>
+                                <td>
+                                    2,052,376
+                                </td>
+                                <td>
+                                    1,261,206
+                                </td>
+                                <td>
+                                    61.45%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="MAŁOPOLSKIE">
+                                <td>
+                                    MAŁOPOLSKIE
+                                </td>
+                                <td>
+                                    2,395,210
+                                </td>
+                                <td>
+                                    1,490,259
+                                </td>
+                                <td>
+                                    62.22%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="MAZOWIECKIE">
+                                <td>
+                                    MAZOWIECKIE
+                                </td>
+                                <td>
+                                    3,948,464
+                                </td>
+                                <td>
+                                    2,424,773
+                                </td>
+                                <td>
+                                    61.41%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="OPOLSKIE">
+                                <td>
+                                    OPOLSKIE
+                                </td>
+                                <td>
+                                    812,320
+                                </td>
+                                <td>
+                                    416,534
+                                </td>
+                                <td>
+                                    51.28%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="PODKARPACKIE">
+                                <td>
+                                    PODKARPACKIE
+                                </td>
+                                <td>
+                                    1,552,767
+                                </td>
+                                <td>
+                                    955,463
+                                </td>
+                                <td>
+                                    61.53%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="PODLASKIE">
+                                <td>
+                                    PODLASKIE
+                                </td>
+                                <td>
+                                    909,628
+                                </td>
+                                <td>
+                                    531,998
+                                </td>
+                                <td>
+                                    58.49%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="POMORSKIE">
+                                <td>
+                                    POMORSKIE
+                                </td>
+                                <td>
+                                    1,618,898
+                                </td>
+                                <td>
+                                    1,017,126
+                                </td>
+                                <td>
+                                    62.83%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="ŚLĄSKIE">
+                                <td>
+                                    ŚLĄSKIE
+                                </td>
+                                <td>
+                                    3,695,358
+                                </td>
+                                <td>
+                                    2,248,237
+                                </td>
+                                <td>
+                                    60.84%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="ŚWIĘTOKRZYSKIE">
+                                <td>
+                                    ŚWIĘTOKRZYSKIE
+                                </td>
+                                <td>
+                                    1,009,207
+                                </td>
+                                <td>
+                                    593,871
+                                </td>
+                                <td>
+                                    58.85%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="WARMIŃSKO-MAZURSKIE">
+                                <td>
+                                    WARMIŃSKO-MAZURSKIE
+                                </td>
+                                <td>
+                                    1,073,754
+                                </td>
+                                <td>
+                                    624,126
+                                </td>
+                                <td>
+                                    58.13%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="WIELKOPOLSKIE">
+                                <td>
+                                    WIELKOPOLSKIE
+                                </td>
+                                <td>
+                                    2,493,157
+                                </td>
+                                <td>
+                                    1,658,968
+                                </td>
+                                <td>
+                                    66.54%
+                                </td>
+                            </tr>
+                            <tr data-link-voivodeship="ZACHODNIOPOMORSKIE">
+                                <td>
+                                    ZACHODNIOPOMORSKIE
+                                </td>
+                                <td>
+                                    1,294,300
+                                </td>
+                                <td>
+                                    778,434
+                                </td>
+                                <td>
+                                    60.14%
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </i>
             </section>
-            <section>
-                <h2>
-                    Statystyka ogółem
-                </h2>
-                <table align="center" border="0" cellpadding="1" cellspacing="2" width="100%">
-                </table>
-            </section>
-            <footer>
-                <p>
-                    Piotr Styczyński @2018
-                </p>
-                <p>
-                    Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)
-                </p>
-                <p>
-                    @styczynski
-                </p>
-                <a href="https://github.com/styczynski/pl-election-2000">
-                    <img src="https://avatars2.githubusercontent.com/u/7319352?s=460&amp;v=4"/>
-                </a>
-            </footer>
+            <i data-icon="fas fa-percent">
+                <footer>
+                    <p>
+                        Piotr Styczyński @2018
+                    </p>
+                    <p>
+                        Projekt realizowany w ramach zajęć z WWW (Uniwersytet Warszawski)
+                    </p>
+                    <p>
+                        @styczynski
+                    </p>
+                    <a href="https://github.com/styczynski/pl-election-2000">
+                        <img alt="Piotr Styczyński - zdjęcie" src="https://avatars2.githubusercontent.com/u/7319352?s=460&amp;v=4"/>
+                    </a>
+                </footer>
+            </i>
         </main>
-        <script async="" type="text/javascript">
-            setLocationHints('', '', '');
-        </script>
-        <script async="" src="./voting_data.js">
-        </script>
+        <i data-icon="fas fa-percent">
+            <script type="text/javascript">
+                (function() {
+                    setTimeout(function() {
+                        setLocationHints('', '', '');
+                    }, 100);
+                })();
+            </script>
+            <script async="" src="./voting_data.js">
+            </script>
+        </i>
     </body>
 </html>

@@ -3,8 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
-        <link href="https://fonts.googleapis.com/css?family=PT+Sans|Raleway:800" rel="stylesheet"/>
         <link href="./index.css" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css"/>
+        <title>
+   Wybory Prezydenckie 2000
+        </title>
         <script crossorigin="anonymous" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" src="https://code.jquery.com/jquery-3.3.1.slim.min.js">
         </script>
         <script defer="" src="https://use.fontawesome.com/releases/v5.0.8/js/all.js">
@@ -35,7 +39,7 @@
                         <i class="fa fa-compass">
                         </i>
                     </figure>
-                    <span class="wx-wrapper">
+                    <nav class="wx-wrapper">
                         <ul>
                             <li data-link-voivodeship="DOLNOŚLĄSKIE">
                                 DOLNOŚLĄSKIE
@@ -86,7 +90,7 @@
                                 ZACHODNIOPOMORSKIE
                             </li>
                         </ul>
-                    </span>
+                    </nav>
                 </li>
                 <li>
                     <figure>
@@ -94,30 +98,26 @@
                         </i>
                     </figure>
                     <input placeholder="Znajdź region..." size="35" type="text"/>
-                    <span class="wxx-wrapper">
+                    <nav class="wxx-wrapper">
                         <ol>
                         </ol>
-                        <span>
-                        </span>
-                    </span>
+                    </nav>
                 </li>
             </ul>
         </nav>
         <header>
             <h1>
-                <p>
-                    Wybory Prezydenta
-                </p>
-                <p>
-                    Rzeczypospolitej Polskiej 2000r.
-                </p>
-                <p>
-                    POMORSKIE
-                </p>
-                <p>
-                    Okręg 47, Wejherowo gm.
-                </p>
+                Wybory Prezydenta
             </h1>
+            <h1>
+                Rzeczypospolitej Polskiej 2000r.
+            </h1>
+            <h2>
+                POMORSKIE
+            </h2>
+            <h3>
+                Okręg 47, Wejherowo gm.
+            </h3>
             <figure id="main-map-chart">
             </figure>
         </header>
@@ -383,26 +383,19 @@
             </nav>
         </aside>
         <main>
-            <ol style="display:none">
-                <li>
-                    <a href="http://www.example.com/">
-                        Polska
-                    </a>
-                </li>
-            </ol>
             <nav>
                 <ul>
                 </ul>
             </nav>
             <section>
-                <h2>
+                <h4>
                     Procentowa liczba głosów dla poszczególnych kandydatów
-                </h2>
-                <span class="section-icon" data-icon="fas fa-users">
-                </span>
+                </h4>
+                <i data-icon="fas fa-users">
+                </i>
                 <figure id="votes-per-cand-chart">
                 </figure>
-                <table class="results-table">
+                <table>
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">
@@ -553,16 +546,16 @@
                 </table>
             </section>
             <section>
-                <h2>
+                <h4>
                     Dane szczegółowe
-                </h2>
-                <span class="section-icon" data-icon="fas fa-info">
-                </span>
+                </h4>
+                <i data-icon="fas fa-info">
+                </i>
                 <figure id="votes-invalid-rate-chart">
                 </figure>
                 <figure id="votes-by-region-chart">
                 </figure>
-                <table class="results-table">
+                <table>
                     <thead>
                         <tr>
                             <th data-mode="toggle" data-type="string">
@@ -617,13 +610,6 @@
                     </tbody>
                 </table>
             </section>
-            <section>
-                <h2>
-                    Statystyka ogółem
-                </h2>
-                <table align="center" border="0" cellpadding="1" cellspacing="2" width="100%">
-                </table>
-            </section>
             <footer>
                 <p>
                     Piotr Styczyński @2018
@@ -635,12 +621,16 @@
                     @styczynski
                 </p>
                 <a href="https://github.com/styczynski/pl-election-2000">
-                    <img src="https://avatars2.githubusercontent.com/u/7319352?s=460&amp;v=4"/>
+                    <img alt="Piotr Styczyński - zdjęcie" src="https://avatars2.githubusercontent.com/u/7319352?s=460&amp;v=4"/>
                 </a>
             </footer>
         </main>
-        <script async="" type="text/javascript">
-            setLocationHints('POMORSKIE', '47', 'Wejherowo gm.');
+        <script type="text/javascript">
+            (function() {
+                setTimeout(function() {
+                    setLocationHints('POMORSKIE', '47', 'Wejherowo gm.');
+                }, 100);
+            })();
         </script>
         <script async="" src="./voting_data.js">
         </script>
