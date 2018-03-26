@@ -12,7 +12,7 @@ class DataGenerator:
 
     def getFileNames(self):
         data = self.globalGenerator.generateScopedData()
-        return list(data['voting']['communes'].keys())[:5]
+        return list(data['voting']['communes'].keys())
 
     def prepareData(self, data, fileName, fileIndex):
         data = self.globalGenerator.generateScopedData(data, None, None, fileName)
