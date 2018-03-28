@@ -1,5 +1,7 @@
 [![Made by Styczynsky Digital Systems][badge sts]][link styczynski]
 
+# [See online!](http://styczynski.in/pl-election-2000)
+
 [![Screenshot of webpage][screenshot1]](http://styczynski.in/pl-election-2000)
 
 # 📜 📊 Quick static site generator and remastered voting site
