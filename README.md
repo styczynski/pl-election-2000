@@ -1,6 +1,6 @@
 [![Made by Styczynsky Digital Systems][badge sts]][link styczynski]
 
-![Screenshot of webpage][screenshot1]
+[![Screenshot of webpage][screenshot1]](http://styczynski.in/pl-election-2000)
 
 # 📜 📊 Quick static site generator and remastered voting site
 
@@ -131,7 +131,7 @@ If the generator is placed inside `templates/subpage` directory then only `subpa
 The method is required and should return data object with added keys.<br>
 The entire returned data object will be available when rendering files.
 
-![Screenshot of webpage][screenshot2]
+[![Screenshot of webpage][screenshot2]](http://styczynski.in/pl-election-2000)
 
 [badge sts]: https://img.shields.io/badge/-styczynsky_digital_systems-blue.svg?style=flat-square&logoWidth=20&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAABYAAAAXCAYAAAAP6L%2BeAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4AgSEh0nVTTLngAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAm0lEQVQ4y2Pc%2Bkz2PwMNAAs2wVMzk4jSbJY%2BD6ccEwONACMsKIh1JSEgbXKeQdr4PO1cPPQMZiGkoC7bkCQD7%2Fx7znDn35AOClK9PEJSBbNYAJz999UGrOLocsM0KHB5EZ%2FXPxiVMDAwMDD8SP3DwJA6kFka5hJCQOBcDwMDAwPDm3%2FbGBj%2BbR8tNrFUTbiAB8tknHI7%2FuTilAMA9aAwA8miDpgAAAAASUVORK5CYII%3D
 
