@@ -251,6 +251,11 @@ header > nav ul li {
 header > nav ul li a {
     color: #575755;
     text-decoration: none;
+    display: block;
+    float: left;
+    max-width: 14vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 header > nav ul li::after {
@@ -479,7 +484,9 @@ aside nav ul li {
     cursor: pointer;
     border-left: rgba(0, 0, 0, 0.18823529411764706) 0.3vw solid;
     padding-left: 10px;
-    word-wrap: break-word;
+    word-wrap: unset;
+    text-overflow: ellipsis;
+    overflow: hidden;
     width: 70%;
 }
 

@@ -67,10 +67,16 @@ config = {
     'VENDOR_DIRECTORY': './vendor',
     'ASSETS_DIRECTORY': './assets'
 }
+"""
+    Global generator configuration.
+"""
 
 templateData = {
     'generatorVersion': config['GENERATOR_VERSION']
 }
+"""
+    Default data for templates.
+"""
 
 templateParametersPredefined = {
     'templates': f'../{config["TEMPLATES_DIRECTORY"]}',
@@ -79,8 +85,14 @@ templateParametersPredefined = {
 }
 
 MODE = config['MODE']
+"""
+    Default mode (default mode is saved under config['MODE'])
+"""
 
 def renderSubtemplate(templateOutputPathForSubfile, template, templateDataGenerator, templateParameters, templateDataFilename, indexNo):
+    """
+        Generates one of the HTML templates listed by DataGenerator.
+    """
     templateParametersForSubfile = templateParameters
 
     templateParametersPrepared = templateDataGenerator.prepareData(templateParameters, templateDataFilename, indexNo)
@@ -93,6 +105,11 @@ def renderSubtemplate(templateOutputPathForSubfile, template, templateDataGenera
         )
 
 def subtemplateMapping(propsList):
+    """
+        Generates one of the HTML templates listed by DataGenerator.
+        This function can be mapped onto the property list of valid format.
+        (see renderSubtemplates for more details)
+    """
 
     template = None
 
@@ -119,7 +136,11 @@ def subtemplateMapping(propsList):
 
 def renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPostfix,
                        templateInputPath, templateDataGenerator, templateParameters):
-
+    """
+        Generates templates for given data generator.
+    """
+    
+                       
     templateDataFilenames = templateDataGenerator.getFileNames()
     indexNo = 0
 
@@ -151,6 +172,9 @@ def renderSubtemplates(pool, templateID, templateOutputPrefix, templateOutputPos
 
 
 def generateTemplates():
+    """
+        Generate all templates.
+    """
     global MODE
     start_time = datetime.now()
 
@@ -172,6 +196,10 @@ def generateTemplates():
       for templatePath in templatePathsList:
           if os.path.isdir(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}'):
               if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.html') or os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/{templatePath}/index.py'):
+                  #
+                  # This loop tries to find all html/js/css/py files.
+                  #
+                  
                   templatesEntrypointsConfigPy = None
                   templatesEntrypointsJS = None
                   templatesEntrypointsCSS = None
@@ -209,6 +237,9 @@ def generateTemplates():
           bar.next()
       bar.finish()
 
+      #
+      # Find global top-level css/js/html/py file.
+      #
       if os.path.isfile(f'{config["TEMPLATES_DIRECTORY"]}/index.html'):
           templatesEntrypointsConfigPy = None
           templatesEntrypointsJS = None
@@ -254,7 +285,7 @@ def generateTemplates():
 
       print(f'[i] Found {len(templatesEntrypoints)} subpage/-s templates.')
 
-
+        
       print('[i] Generate templates...')
       for templateID, templateConfig in templatesEntrypoints.items():
           templateInputPath = templateConfig['input']
@@ -377,6 +408,9 @@ def generateTemplates():
 
 
 def loadCliParameters():
+    """
+        Sets configuration reading argv variables.
+    """
     global MODE
     if len(sys.argv) > 1:
         if (sys.argv[1] == 'dev') or (sys.argv[1] == 'server'):
@@ -412,6 +446,9 @@ def loadCliParameters():
             sys.exit(1)
 
 def runCli():
+    """
+        Runs generator in command line interface mode (interactive).
+    """
     global MODE
     loadCliParameters()
     generateTemplates()
@@ -459,5 +496,6 @@ def runCli():
 
     print('[i] Terminate main worker...')
 
+# The default behaviour is to start CLI mode
 if __name__ == "__main__":
     runCli()
