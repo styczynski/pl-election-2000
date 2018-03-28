@@ -46,7 +46,7 @@
 #
 #
 
-PYTHON_EXECUTABLE=python
+PYTHON_EXECUTABLE=python3
 PIP_EXECUTABLE=pip
 VIRTUALENV_EXECUTABLE=virtualenv
 
@@ -88,7 +88,7 @@ if [ "$1" = "reset" ]; then
     ${VIRTUALENV_EXECUTABLE} python-env
 
     echo "[i] Activate environment..."
-    source ./python-env/Scripts/activate
+    source ./python-env/Scripts/activate || source ./python-env/bin/activate
 
     echo "[i] Install requirements..."
     ${PIP_EXECUTABLE} install -r requirements.txt
@@ -111,7 +111,7 @@ else
             ${VIRTUALENV_EXECUTABLE} python-env
 
             echo "[i] Activate environment..."
-            source ./python-env/Scripts/activate
+            source ./python-env/Scripts/activate || source ./python-env/bin/activate
 
             echo "[i] Install requirements..."
             ${PIP_EXECUTABLE} install -r requirements.txt
@@ -134,7 +134,7 @@ else
 
             if [ -d ./python-env ]; then
                 
-                source ./python-env/Scripts/activate
+                source ./python-env/Scripts/activate || source ./python-env/bin/activate
                 
                 echo ""
                 echo " --- Executing in virtual environment ---"
